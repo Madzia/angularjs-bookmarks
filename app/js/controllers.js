@@ -2,13 +2,19 @@
 
 /* Controllers */
 
-var appControllers = angular.module('appControllers', []);
+var appControllers = angular.module('appControllers', ['ngCookies']);
 
-appControllers.controller('MainAppCtrl', ['$scope', '$window', 'AuthService',
-  function($scope, $window, AuthService) {
+appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService',
+  function($scope, $cookieStore, AuthService) {
     //auth setup
-    $scope.currentUser = null;
-    $scope.AuthUser = null;
+    try {
+      $scope.AuthUser = $cookieStore.get('AuthUser');
+      $scope.currentUser = $scope.AuthUser.login;
+    }
+    catch (err){
+      $scope.AuthUser = null;
+      $scope.currentUser = null;
+    }
     $scope.credentials = {
       "login": '',
       "password": ''
@@ -22,6 +28,7 @@ appControllers.controller('MainAppCtrl', ['$scope', '$window', 'AuthService',
           function ( user ) {
             console.log( user );
             if( user.auth ){
+              $cookieStore.put('AuthUser', {'login': user.login, 'token': user.token});
               $scope.currentUser = user.login;
             }
           } );
