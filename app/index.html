@@ -17,11 +17,50 @@
 
   <div class="container">
 
-    <div class="well">{{currentUser}}</div>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Share Bookmarks</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#/index">Home</a></li>
+        </li>
+      </ul>
+      <form name="siginForm" class="navbar-form navbar-right" ng-submit="signin(credentials)" novalidate ng-show="!currentUser">
+        <div class="form-group">
+          <input name="siginLogin" type="text" class="form-control"
+            placeholder="Login" ng-model="credentials.login" ng-minlength="6">
+        </div>
+        <div class="form-group">
+          <input name="siginPassword" type="password" class="form-control"
+            placeholder="Password" ng-model="credentials.password" ng-minlength="8">
+        </div>
+        <button type="submit" class="btn btn-default"
+        ng-disabled="( siginForm.$invalid || (credentials.login.length === 0) || (credentials.password.length === 0) )">Sign in</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right" ng-show="!!currentUser">
+        <li><a href="#">Sign out</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+
+</nav>
 
     <div class="row">
 
-      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <p> {{ currentUser }} </p>
+      </div>
 
       <div class="col-md-8" ng-view></div>
 
