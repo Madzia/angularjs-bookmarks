@@ -11,7 +11,9 @@
     "http-server": "^0.6.1",
     "bower": "^1.3.1",
     "shelljs": "^0.2.6",
-    "express": "3.x"
+    "express": "3.x",
+    "socket.io": ">= 0.9.6",
+    "mongodb": "1.3.x"
   },
   "scripts": {
     "postinstall": "bower install",

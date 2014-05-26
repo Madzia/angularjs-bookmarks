@@ -5,6 +5,7 @@
   <title>Share Bookmarks</title>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="css/app.css">
+  <script src="/socket.io/socket.io.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -37,7 +38,7 @@
         <li class="active"><a href="#/index">Home</a></li>
         </li>
       </ul>
-      <form name="siginForm" class="navbar-form navbar-right" ng-submit="signin(credentials)" novalidate ng-show="!currentUser">
+      <form name="siginForm" id="signinForm" class="navbar-form navbar-right" ng-submit="signin(credentials)" novalidate ng-show="!currentUser">
         <div class="form-group">
           <input name="siginLogin" type="text" class="form-control"
             placeholder="Login" ng-model="credentials.login" ng-minlength="6">
@@ -46,11 +47,12 @@
           <input name="siginPassword" type="password" class="form-control"
             placeholder="Password" ng-model="credentials.password" ng-minlength="8">
         </div>
-        <button type="submit" class="btn btn-default"
+        <button type="submit" class="btn btn-default" id="signin-btn"
         ng-disabled="( siginForm.$invalid || (credentials.login.length === 0) || (credentials.password.length === 0) )">Sign in</button>
       </form>
-      <ul class="nav navbar-nav navbar-right" ng-show="!!currentUser">
-        <li><a href="#">Sign out</a></li>
+      <ul class="nav navbar-nav navbar-right" ng-show="!!currentUser" id="loggedin-box">
+        <li><a id="welcome-msg">Welcome, {{AuthUser.login}}. <span class="glyphicon glyphicon-cog"></span></a></li>
+        <li><a href="" ng-click="signout()">Sign out</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -62,6 +64,7 @@
       <div class="col-md-4">
         <p>c.u.: {{ currentUser }} </p>
         <p>a.u.: {{ AuthUser }} </p>
+        <p>usrs: {{ users }} </p>
       </div>
 
       <div class="col-md-8" ng-view></div>

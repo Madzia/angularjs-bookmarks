@@ -3,7 +3,7 @@
 body {
   padding-top: 75px;
 }
-
+/*
 .phones {
   list-style: none;
 }
@@ -23,7 +23,7 @@ body {
 }
 
 /** Detail View **/
-img.phone {
+/*img.phone {
   float: left;
   border: 1px solid black;
   margin-right: 3em;
@@ -81,4 +81,4 @@ ul.specs dt {
 
 h1 {
   border-bottom: 1px solid gray;
-}
+}*/
