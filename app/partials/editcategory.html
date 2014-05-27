@@ -1,12 +1,7 @@
 <div class="row">
-  <div class="col-md-4">
-    <h3>My categories</h3>
-    <div class="list-group">
-      <a href="#" class="list-group-item" ng-repeat="cat in categories | usersCategories: AuthUser">{{cat.name}}</a>
-    </div>
-  </div>
+  <div class="col-md-1"></div>
 
-  <div class="col-md-8">
+  <div class="col-md-10">
     <h2>Edit category</h2>
     <hr/>
 
@@ -20,4 +15,5 @@
       ng-disabled="( editCategoryForm.$invalid || (editedCategory.name.length === 0) )" ng-show="!!currentUser">Save</button>
     </form>
   </div>
+  <div class="col-md-1"></div>
 </div>

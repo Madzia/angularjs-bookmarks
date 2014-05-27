@@ -5,6 +5,8 @@
 var App = angular.module('App', [
   'ngRoute',
   'appControllers',
+  'categoriesControllers',
+  'bookmarksControllers',
   'appFilters',
   'appServices'
 ]);
@@ -35,6 +37,18 @@ App.config(['$routeProvider',
       when('/user/:userId', {
         templateUrl: 'partials/user.html',
         controller: 'userCtrl'
+      }).
+      when('/addbookmark/:categoryId', {
+        templateUrl: 'partials/addbookmark.html',
+        controller: 'addBookmarkCtrl'
+      }).
+      when('/editbookmark/:bookmarkId', {
+        templateUrl: 'partials/editbookmark.html',
+        controller: 'editBookmarkCtrl'
+      }).
+      when('/rmbookmark/:bookmarkId', {
+        templateUrl: 'partials/rmbookmark.html',
+        controller: 'rmBookmarkCtrl'
       }).
       otherwise({
         redirectTo: '/index'

@@ -7,7 +7,8 @@ exports.auth = function(req, res, appUser){
   appUser.auth({'login':login, 'password':password}, function ( result ){
 
     if( result ){
-      var user = {'auth': true, 'login': login, 'id': result.id, 'token': new Date().getTime() };
+      var token = new Date().getTime();
+      var user = {'auth': true, 'login': login, 'id': result.id, 'token': token };
       appUser.signin(user.login, user.id, user.token);
       res.writeHead(200, {
         'Content-Type': 'application/json; charset=utf8'
@@ -31,7 +32,7 @@ exports.check = function(req, res, appUser){
   var result = appUser.check(login, token);
   if( result ){
     var user = {'auth': true, 'login': result.login, 'token': result.token, 'id': result.id };
-    appUser.signin(user.login, user.token);
+    appUser.signin(user.login, user.id, user.token);
     res.writeHead(200, {
       'Content-Type': 'application/json; charset=utf8'
     });

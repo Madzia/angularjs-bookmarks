@@ -4,8 +4,7 @@
 
     <h2>{{user.login}} categories</h2>
     <hr/>
-    <p> {{ user.id }} </p>
-    <p> {{ AuthUser.id }} <p>
+
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -19,17 +18,17 @@
           <a class="btn btn-link" href="#/user/{{user.login}}/category/{{cat.id}}">{{cat.name}}</a>
         </td>
         <td ng-show="!!currentUser && AuthUser.id === user.id">
-          <a class="btn btn-link" href="#/editcategory/{{cat.id}}">
+          <a class="btn btn-default" href="#/editcategory/{{cat.id}}">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
         </td>
         <td ng-show="!!currentUser && AuthUser.id === user.id">
-          <a class="btn btn-link" href="#/rmcategory/{{cat.id}}">
+          <a class="btn btn-default" href="#/rmcategory/{{cat.id}}">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
         </td>
         <td ng-show="!!currentUser && AuthUser.id === user.id">
-          <a class="btn btn-link" href="#/addbookmark/{{cat.id}}">
+          <a class="btn btn-default" href="#/addbookmark/{{cat.id}}">
             <span class="glyphicon glyphicon-plus"></span>
           </a>
         </td>

@@ -4,29 +4,32 @@
 
     <h2>{{category.name}} bookmarks</h2>
     <hr/>
-    <p> {{ user.id }} </p>
-    <p> {{ AuthUser.id }} <p>
+
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-          <th>Name</th>
+          <th>Name &amp; Url</th>
           <th colspan=3 ng-show="!!currentUser && AuthUser.id === user.id">Actions</th>
         </tr>
       </thead>
 
       <tr ng-repeat="book in bookmarks | categoryBookmarks: category">
-        <td>{{book.name}}</td>
+        <td>
+          {{book.name}}
+          <a class="btn btn-link" href="{{book.url}}" target="_blank">
+             {{ (book.url.length > 32 ? book.url.substring(0,32) + '...' : book.url ) }}
+          </a>
+        </td>
         <td ng-show="!!currentUser && AuthUser.id === user.id">
-          <a class="btn btn-link" href="#/editcategory/{{cat.id}}">
+          <a class="btn btn-default" href="#/editbookmark/{{book.id}}">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
         </td>
         <td ng-show="!!currentUser && AuthUser.id === user.id">
-          <a class="btn btn-link" href="#/rmcategory/{{cat.id}}">
+          <a class="btn btn-default" href="#/rmbookmark/{{book.id}}">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
         </td>
-        <td ng-show="!!currentUser && AuthUser.id === user.id">add bookmark</td>
       </tr>
     </table>
 
