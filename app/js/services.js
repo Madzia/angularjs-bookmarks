@@ -54,7 +54,7 @@ appServices.factory('AuthService', [ '$resource',
       },
       'update': function ( coll, item ) {
         for(var i = 0; i < coll.length; i++){
-          if( coll[i]._id === item._id ) {
+          if( coll[i].id === item.id ) {
             coll[i] = item;
             return true;
           }
@@ -63,7 +63,7 @@ appServices.factory('AuthService', [ '$resource',
       },
       'remove': function ( coll, item ) {
         for(var i = 0; i < coll.length; i++){
-          if( coll[i]._id === item._id ) {
+          if( coll[i].id === item.id ) {
             coll.splice(i, 1);
             return true;
           }

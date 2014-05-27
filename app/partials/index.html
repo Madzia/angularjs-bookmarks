@@ -1,29 +1,32 @@
-<p>currentUser: {{currentUser}} </p>
+<div class="row" ng-show="!currentUser">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
 
-<div ng-show="!currentUser">
+    <h1>Welcome!</h1>
+    <h2>Sign in or create account.</h2>
+    <hr/>
 
-  <h1>Welcome! Sign in or create account.</h1>
+    <h2>Create account</h2>
 
-  <hr/>
+    <form name="signupForm" novalidate ng-submit="signup(account)">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Login</label>
+        <input type="text" class="form-control" id="signup-login" placeholder="Login"
+          ng-model="account.login" ng-minlength="6" ng-pattern="/[\w\d]+/">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="signup-password" placeholder="Password"
+          ng-model="account.password" ng-minlength="8" ng-pattern="/[\w\d]+/">
+      </div>
+      <button type="submit" class="btn btn-default"
+      ng-disabled="( signupForm.$invalid || (account.login.length === 0) || (account.password.length === 0) )">Sign up</button>
+    </form>
 
-  <h2>Create account</h2>
+    <p>{{account.login}}</p>
+    <p>{{account.password}}</p>
 
-  <form name="signupForm" novalidate ng-submit="signup(account)">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Login</label>
-      <input type="text" class="form-control" id="signup-login" placeholder="Login"
-        ng-model="account.login" ng-minlength="6" ng-pattern="/[\w\d]+/">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="signup-password" placeholder="Password"
-        ng-model="account.password" ng-minlength="8" ng-pattern="/[\w\d]+/">
-    </div>
-    <button type="submit" class="btn btn-default"
-    ng-disabled="( signupForm.$invalid || (account.login.length === 0) || (account.password.length === 0) )">Sign up</button>
-  </form>
+  </div>
 
-  <p>{{account.login}}</p>
-  <p>{{account.password}}</p>
-
+  <div class="col-md-3"></div>
 </div>

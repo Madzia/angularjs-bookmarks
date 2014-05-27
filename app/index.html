@@ -17,8 +17,6 @@
 </head>
 <body>
 
-  <div class="container">
-
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -35,7 +33,9 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#/index">Home</a></li>
+        <li><a href="#/index">Home</a></li>
+        <li ng-show="!!currentUser"><a href="#/user/{{currentUser}}">My Cateogries</a></li>
+        <li ng-show="!!currentUser"><a href="#/addcategory">Add Cateogry</a></li>
         </li>
       </ul>
       <form name="siginForm" id="signinForm" class="navbar-form navbar-right" ng-submit="signin(credentials)" novalidate ng-show="!currentUser">
@@ -59,18 +59,10 @@
 
 </nav>
 
-    <div class="row">
+<p>c.u.: {{ currentUser }} </p>
+<p>a.u.: {{ AuthUser }} </p>
 
-      <div class="col-md-4">
-        <p>c.u.: {{ currentUser }} </p>
-        <p>a.u.: {{ AuthUser }} </p>
-        <p>usrs: {{ users }} </p>
-      </div>
-
-      <div class="col-md-8" ng-view></div>
-
-    </div>
-  </div>
+  <div class="container" ng-view></div>
 
 </body>
 </html>
