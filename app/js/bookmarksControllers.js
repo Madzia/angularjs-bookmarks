@@ -2,12 +2,21 @@ var bookmarksControllers = angular.module('bookmarksControllers', []);
 
 bookmarksControllers.controller('categoryCtrl', ['$scope', '$routeParams', '$location', 'socket', 'manager',
   function( $scope, $routeParams, $location, socket, manager ) {
+    $scope.query = "";
+    $scope.orderProp = "-id";
     var wait = setInterval(function () {
       if($scope.init){
         clearInterval(wait);
         console.log("fill data");
-        console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
-        var usr = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); });
+        var usr;
+        if( isNaN(parseInt($routeParams.userId)) ){
+          console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
+          usr = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); });
+        }
+        else{
+          console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); }));
+          usr = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); });
+        }
         console.log(manager.find( $scope.categories, function( c ){ return ($routeParams.categoryId === c.id.toString()); }));
         var cat = manager.find( $scope.categories, function( c ){ return ($routeParams.categoryId === c.id.toString()); });
         if(usr.length > 0){

@@ -99,12 +99,21 @@ categoriesControllers.controller('rmCategoryCtrl', ['$scope', '$location', '$rou
 
 categoriesControllers.controller('userCtrl', ['$scope', '$routeParams', '$location', 'socket', 'manager',
   function( $scope, $routeParams, $location, socket, manager ) {
+    $scope.query = "";
+    $scope.orderProp = "-id";
     var wait = setInterval(function () {
       if($scope.init){
         clearInterval(wait);
         console.log("fill data");
-        console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
-        var id = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); });
+        var id;
+        if( isNaN(parseInt($routeParams.userId)) ){
+          console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
+          id = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); });
+        }
+        else{
+          console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); }));
+          id = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); });
+        }
         if(id.length > 0){
           console.log(id[0].id);
           $scope.user = { 'id': id[0].id, 'login': id[0].login };

@@ -99,6 +99,8 @@ appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService
 
 appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager',
   function( $scope, socket, manager ) {
+    $scope.query = "";
+    $scope.orderProp = "-id";
     console.log($scope.currentUser);
     $scope.account = {
       "login": "",
