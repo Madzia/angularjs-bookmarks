@@ -7,6 +7,7 @@ var appControllers = angular.module('appControllers', ['ngCookies']);
 appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService', 'socket', 'manager',
   function($scope, $cookieStore, AuthService, socket, manager) {
     $scope.init = false;
+    $scope.loginFailed = false;
 
     $scope.credentials = {
       "login": '',
@@ -35,6 +36,7 @@ appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService
       console.log($cookieStore.get('AuthUser'));
       $scope.AuthUser = data;
       $scope.currentUser = data.login;
+      $scope.loginFailed = false;
     });
 
     //auth setup
@@ -79,6 +81,9 @@ appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService
             if( user.auth ){
               $cookieStore.put('AuthUser', {'login': user.login, 'token': user.token});
               $scope.currentUser = user.login;
+              $scope.loginFailed = false;
+            } else {
+              $scope.loginFailed = true;
             }
           } );
     }

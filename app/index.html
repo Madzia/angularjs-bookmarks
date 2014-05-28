@@ -41,11 +41,11 @@
         </li>
       </ul>
       <form name="siginForm" id="signinForm" class="navbar-form navbar-right" ng-submit="signin(credentials)" novalidate ng-show="!currentUser">
-        <div class="form-group">
+        <div class="form-group {{( siginForm.siginLogin.$invalid ? 'has-error' : '' )}}">
           <input name="siginLogin" type="text" class="form-control"
             placeholder="Login" ng-model="credentials.login" ng-minlength="6">
         </div>
-        <div class="form-group">
+        <div class="form-group {{( siginForm.siginPassword.$invalid ? 'has-error' : '' )}}">
           <input name="siginPassword" type="password" class="form-control"
             placeholder="Password" ng-model="credentials.password" ng-minlength="8">
         </div>
@@ -60,6 +60,13 @@
   </div><!-- /.container-fluid -->
 
 </nav>
+
+  <div class="container" ng-show="!!loginFailed">
+    <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <strong>Sign in failed.</strong> Incorrect login or password.
+    </div>
+  </div>
 
 <!-- <p>c.u.: {{ currentUser }} </p>
 <p>a.u.: {{ AuthUser }} </p> -->
