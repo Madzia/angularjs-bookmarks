@@ -5,17 +5,23 @@
     <h2>Create bookmark: {{category.name}}</h2>
     <hr/>
 
+  <div class="alert alert-danger" ng-show="!!addBookmarkFailed">
+    <strong>Add bookmark failed.</strong> This name is already used in this category.
+  </div>
+
+
     <form name="addBookmarkForm" novalidate ng-submit="addBookmark(addedBookmark)">
-      <div class="form-group">
+      <div class="form-group {{ ( addBookmarkForm.addedBookmarkName.$invalid ? 'has-error' : '' ) }}">
         <label for="exampleInputEmail1">Name</label>
-        <input type="text" class="form-control" id="addbookmark-name" placeholder="Name"
+        <input type="text" class="form-control" id="addbookmark-name" name="addedBookmarkName" placeholder="Name"
           ng-model="addedBookmark.name" ng-minlength="6" ng-pattern="/[\w\d\s]+/">
       </div>
-      <div class="form-group">
+      <div class="form-group {{ ( addBookmarkForm.addedBookmarkUrl.$invalid ? 'has-error' : '' ) }}">
         <label for="exampleInputEmail1">URL</label>
-        <input type="text" class="form-control" id="addbookmark-url" placeholder="URL"
-          ng-model="addedBookmark.url" ng-minlength="6">
+        <input type="url" class="form-control" id="addbookmark-url" name="addedBookmarkUrl" placeholder="URL"
+          ng-model="addedBookmark.url">
       </div>
+      <a class="btn btn-danger" ng-show="!!currentUser" href="#/user/{{currentUser}}/category/{{category.id}}">Cancel</a>
       <button type="submit" class="btn btn-default"
         ng-disabled="( addBookmarkForm.$invalid || (addedBookmark.name.length === 0) || (addedBookmark.url.length === 0) )"
         ng-show="!!currentUser">Add bookmark</button>

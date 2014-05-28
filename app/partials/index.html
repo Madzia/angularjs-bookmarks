@@ -44,13 +44,17 @@
       <thead>
         <tr>
           <th>Name</th>
+          <th>Owner</th>
           <th colspan=3><span ng-show="!!currentUser">Actions</span></th>
         </tr>
       </thead>
 
-      <tr ng-repeat="cat in categories | filter:query | orderBy:orderProp">
+      <tr ng-repeat="cat in browseCategories | filter:query | orderBy:orderProp">
         <td>
-          <a class="btn btn-link" href="#/user/{{cat.owner}}/category/{{cat.id}}">{{cat.name}}</a>
+          <a class="btn btn-link" href="#/user/{{userName(cat.owner)}}/category/{{cat.id}}">{{cat.name}}</a>
+        </td>
+        <td>
+          <a class="btn btn-link" href="#/user/{{userName(cat.owner)}}">{{userName(cat.owner)}}</a>
         </td>
         <td>
           <a class="btn btn-default" href="#/editcategory/{{cat.id}}"
@@ -77,17 +81,22 @@
 
   <div class="col-md-4" ng-show="!currentUser">
 
+    <div class="alert alert-danger" ng-show="!!signupFailed">
+      <strong>Sign up failed.</strong> This login already exists.
+    </div>
+
     <h2>Create account</h2>
+    <hr/>
 
     <form name="signupForm" novalidate ng-submit="signup(account)">
-      <div class="form-group">
+      <div class="form-group {{ ( signupForm.signupLogin.$invalid ? 'has-error' : '' ) }}">
         <label for="exampleInputEmail1">Login</label>
-        <input type="text" class="form-control" id="signup-login" placeholder="Login"
+        <input type="text" class="form-control" id="signup-login" name="signupLogin" placeholder="Login"
           ng-model="account.login" ng-minlength="6" ng-pattern="/[\w\d]+/">
       </div>
-      <div class="form-group">
+      <div class="form-group {{ ( signupForm.signupPassowrd.$invalid ? 'has-error' : '' ) }}">
         <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="signup-password" placeholder="Password"
+        <input type="password" class="form-control" id="signup-password" name="signupPassowrd" placeholder="Password"
           ng-model="account.password" ng-minlength="8" ng-pattern="/[\w\d]+/">
       </div>
       <button type="submit" class="btn btn-default"

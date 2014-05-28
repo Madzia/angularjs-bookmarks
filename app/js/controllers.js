@@ -104,25 +104,47 @@ appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService
 
   }]);
 
-appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager',
-  function( $scope, socket, manager ) {
+appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager', 'oninit',
+  function( $scope, socket, manager, oninit ) {
     $scope.query = "";
     $scope.orderProp = "-id";
+    $scope.signupFailed = false;
+    $scope.browseCategories = [];
 
     $scope.account = {
       "login": "",
       "password": ""
     };
+
+    oninit($scope, function () {
+      console.log('oninit');
+      $scope.browseCategories = $scope.categories;
+      $scope.$apply();
+    });
+
+    $scope.userName = function ( userId ) {
+      // console.log(userId);
+      var usr = manager.find( $scope.users, function ( u ) { return u.id === userId; });
+      // console.log(usr);
+      if(usr.length > 0){
+        return usr[0].login;
+      }
+      else{
+        return "unknown";
+      }
+    }
     //sign up
     $scope.signup = function ( account ) {
       if( manager.find( $scope.users,
         function ( item ) { return item.login === account.login} ).length === 0 )
       {
+        $scope.signupFailed = false;
         socket.emit('addUser', account);
       }
       else {
-        //TODO err - login zajęty
+        $scope.signupFailed = true;
       }
     };
+
 
   }]);

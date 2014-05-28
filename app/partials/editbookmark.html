@@ -5,17 +5,22 @@
     <h2>Edit bookmark</h2>
     <hr/>
 
+    <div class="alert alert-danger" ng-show="!!editBookmarkFailed">
+      <strong>Add bookmark failed.</strong> This name is already used in this category.
+    </div>
+
     <form name="editBookmarkForm" novalidate ng-submit="editBookmark(editedBookmark)">
-      <div class="form-group">
+      <div class="form-group {{ ( editBookmarkForm.editbookmarkName.$invalid ? 'has-error' : '' ) }}">
         <label for="exampleInputEmail1">Name</label>
-        <input type="text" class="form-control" id="editbookmark-name" placeholder="Name"
+        <input type="text" class="form-control" id="editbookmark-name" name="editbookmarkName" placeholder="Name"
           ng-model="editedBookmark.name" ng-minlength="6" ng-pattern="/[\w\d\s]+/">
       </div>
-      <div class="form-group">
+      <div class="form-group {{ ( editBookmarkForm.editbookmarkUrl.$invalid ? 'has-error' : '') }}">
         <label for="exampleInputEmail1">URL</label>
-        <input type="text" class="form-control" id="editbookmark-url" placeholder="URL"
+        <input type="text" class="form-control" id="editbookmark-url" name="editbookmarkUrl" placeholder="URL"
           ng-model="editedBookmark.url" ng-minlength="6">
       </div>
+      <a class="btn btn-danger" ng-show="!!currentUser" href="#/user/{{currentUser}}/category/{{editedBookmark.category}}">Cancel</a>
       <button type="submit" class="btn btn-default"
         ng-disabled="( editBookmarkForm.$invalid || (editedBookmark.name.length === 0) || (editedBookmark.url.length === 0) )"
         ng-show="!!currentUser">Save</button>

@@ -4,7 +4,8 @@ var categoriesControllers = angular.module('categoriesControllers', []);
 
 categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'socket', 'manager',
   function( $scope, $location, socket, manager ) {
-    console.log($scope.currentUser);
+    // console.log($scope.currentUser);
+    $scope.addCategoryFailed = false;
     $scope.addedCateogry = {
       "name": ""
     };
@@ -14,10 +15,11 @@ categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'soc
         function ( item ) { return item.name === cat.name} ).length === 0 )
       {
         socket.emit('addCategory', {'user': $scope.AuthUser, 'data':cat});
+        $scope.addCategoryFailed = false;
         $location.path('/user/'+$scope.currentUser);
       }
       else {
-        //TODO err - nazwa zajęty
+        $scope.addCategoryFailed = true;
       }
     };
 
@@ -27,6 +29,7 @@ categoriesControllers.controller('editCategoryCtrl',
   ['$scope', '$location', '$routeParams', 'socket', 'manager', 'oninit',
   function( $scope, $location, $routeParams, socket, manager, oninit ) {
     console.log($scope.currentUser);
+    $scope.editCategoryFailed = false;
     $scope.editedCateogry = {
       "name": ""
     };
@@ -49,8 +52,17 @@ categoriesControllers.controller('editCategoryCtrl',
       if( manager.find( $scope.categories,
         function ( item ) { return item.id === cat.id; } ).length === 1 )
       {
-        socket.emit('editCategory', {'user': $scope.AuthUser, 'data':cat});
-        $location.path('/user/'+$scope.currentUser);
+        if( manager.find( $scope.categories,
+          function ( item ) { return item.name === cat.name && item.id !== cat.id; } ).length === 0 )
+        {
+          socket.emit('editCategory', {'user': $scope.AuthUser, 'data':cat});
+          $scope.editCategoryFailed = false;
+          $location.path('/user/'+$scope.currentUser);
+        }
+        else {
+          // err - nazwa zajęta
+          $scope.editCategoryFailed = true;
+        }
       }
       else {
         // err - nie ma takiej kategorii

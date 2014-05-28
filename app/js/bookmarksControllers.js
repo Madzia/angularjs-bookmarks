@@ -38,6 +38,7 @@ bookmarksControllers.controller('categoryCtrl',
 bookmarksControllers.controller('addBookmarkCtrl',
   ['$scope', '$routeParams', '$location', 'socket', 'manager', 'oninit',
   function( $scope, $routeParams, $location, socket, manager, oninit ) {
+    $scope.addBookmarkFailed = false;
     $scope.addedBookmark = {
       'name': "",
       'url': ""
@@ -64,10 +65,12 @@ bookmarksControllers.controller('addBookmarkCtrl',
         bookmark.category = $scope.category.id;
         // console.log(bookmark);
         socket.emit('addBookmark', {'user': $scope.AuthUser, 'data': bookmark});
+        $scope.addBookmarkFailed = false;
         $location.path('/user/'+$scope.currentUser+'/category/'+$scope.category.id);
       }
       else {
-        //TODO err - nazwa zajęty
+        // err - nazwa zajęty
+        $scope.addBookmarkFailed = true;
       }
     }
 
@@ -77,6 +80,7 @@ bookmarksControllers.controller('addBookmarkCtrl',
 bookmarksControllers.controller('editBookmarkCtrl',
   ['$scope', '$routeParams', '$location', 'socket', 'manager', 'oninit',
   function( $scope, $routeParams, $location, socket, manager, oninit ) {
+    $scope.editBookmarkFailed = false;
     $scope.editedBookmark = {
       'name': "",
       'url': ""
@@ -100,9 +104,18 @@ bookmarksControllers.controller('editBookmarkCtrl',
       if( manager.find( $scope.bookmarks,
         function ( item ) { return item.id === bookmark.id; } ).length === 1 )
       {
-        // console.log(bookmark);
-        socket.emit('editBookmark', {'user': $scope.AuthUser, 'data': bookmark});
-        $location.path('/user/'+$scope.currentUser+'/category/'+bookmark.category);
+        if( manager.find( $scope.bookmarks,
+          function ( item ) { return item.name === bookmark.name && item.id !== bookmark.id; } ).length === 0 )
+        {
+          // console.log(bookmark);
+          socket.emit('editBookmark', {'user': $scope.AuthUser, 'data': bookmark});
+          $scope.editBookmarkFailed = false;
+          $location.path('/user/'+$scope.currentUser+'/category/'+bookmark.category);
+        }
+        else {
+          //err - nazwa zajęta
+          $scope.editBookmarkFailed = true;
+        }
       }
       else {
         //TODO err - nie ma takiej zakładki
