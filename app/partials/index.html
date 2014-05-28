@@ -43,18 +43,15 @@
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Owner</th>
+          <th>Owner / Name</th>
           <th colspan=3><span ng-show="!!currentUser">Actions</span></th>
         </tr>
       </thead>
 
       <tr ng-repeat="cat in browseCategories | filter:query | orderBy:orderProp">
         <td>
-          <a class="btn btn-link" href="#/user/{{userName(cat.owner)}}/category/{{cat.id}}">{{cat.name}}</a>
-        </td>
-        <td>
-          <a class="btn btn-link" href="#/user/{{userName(cat.owner)}}">{{userName(cat.owner)}}</a>
+          <a class="btn btn-link" href="#/user/{{userName(cat.owner)}}">{{userName(cat.owner)}}</a> /
+          <a class="btn btn-link" href="#/user/{{userName(cat.owner)}}/category/{{cat.id}}"><strong>{{cat.name}}</strong></a>
         </td>
         <td>
           <a class="btn btn-default" href="#/editcategory/{{cat.id}}"

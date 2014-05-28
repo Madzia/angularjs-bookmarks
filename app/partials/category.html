@@ -43,7 +43,7 @@
 
       <tr ng-repeat="book in bookmarks | categoryBookmarks: category | filter:query | orderBy:orderProp">
         <td>
-          {{book.name}}
+          <strong>{{book.name}}</storng> 
           <a class="btn btn-link" href="{{book.url}}" target="_blank">
              {{ (book.url.length > 32 ? book.url.substring(0,32) + '...' : book.url ) }}
           </a>

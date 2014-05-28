@@ -43,7 +43,9 @@
 
       <tr ng-repeat="cat in categories | usersCategories: user | filter:query | orderBy:orderProp">
         <td>
-          <a class="btn btn-link" href="#/user/{{user.login}}/category/{{cat.id}}">{{cat.name}}</a>
+          <a class="btn btn-link" href="#/user/{{user.login}}/category/{{cat.id}}">
+            <strong>{{cat.name}}</strong>
+          </a>
         </td>
         <td ng-show="!!currentUser && AuthUser.id === user.id">
           <a class="btn btn-default" href="#/editcategory/{{cat.id}}">
