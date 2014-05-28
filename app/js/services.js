@@ -80,11 +80,14 @@ appServices.factory('AuthService', [ '$resource',
         return res;
       }
     };
+  }]).
+  factory('oninit',[ function () {
+    return function ( scope, callback ) {
+      var wait = setInterval(function () {
+        if(scope.init){
+          clearInterval(wait);
+          callback();
+        }
+      }, 100);
+    };
   }]);
-
-// appServices.factory('Phone', ['$resource',
-//   function($resource){
-//     return $resource('phones/:phoneId.json', {}, {
-//       query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
-//     });
-//   }]);

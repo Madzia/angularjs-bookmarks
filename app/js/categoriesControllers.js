@@ -1,3 +1,5 @@
+'use strict';
+
 var categoriesControllers = angular.module('categoriesControllers', []);
 
 categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'socket', 'manager',
@@ -21,27 +23,25 @@ categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'soc
 
   }]);
 
-categoriesControllers.controller('editCategoryCtrl', ['$scope', '$location', '$routeParams', 'socket', 'manager',
-  function( $scope, $location, $routeParams, socket, manager ) {
+categoriesControllers.controller('editCategoryCtrl',
+  ['$scope', '$location', '$routeParams', 'socket', 'manager', 'oninit',
+  function( $scope, $location, $routeParams, socket, manager, oninit ) {
     console.log($scope.currentUser);
     $scope.editedCateogry = {
       "name": ""
     };
 
-    var wait = setInterval(function () {
-      if($scope.init){
-        clearInterval(wait);
-        console.log("fill data");
+    oninit($scope, function () {
+        // console.log("fill data");
         var id = parseInt($routeParams.categoryId);
-        console.log(manager.find( $scope.categories, function( c ){ return (id === c.id); }));
+        // console.log(manager.find( $scope.categories, function( c ){ return (id === c.id); }));
         var cat = manager.find( $scope.categories, function( c ){ return (id === c.id); });
         if(cat.length > 0){
-          console.log(cat[0]);
+          // console.log(cat[0]);
           $scope.editedCategory = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
           $scope.$apply();
         }
-      }
-    }, 100);
+      });
 
     //edit category
     $scope.editCategory = function ( cat ) {
@@ -53,33 +53,32 @@ categoriesControllers.controller('editCategoryCtrl', ['$scope', '$location', '$r
         $location.path('/user/'+$scope.currentUser);
       }
       else {
-        //TODO err - nazwa zajęty
+        // err - nie ma takiej kategorii
+        $location.path('/user/'+$scope.currentUser);
       }
     };
 
   }]);
 
-categoriesControllers.controller('rmCategoryCtrl', ['$scope', '$location', '$routeParams', 'socket', 'manager',
-  function( $scope, $location, $routeParams, socket, manager ) {
+categoriesControllers.controller('rmCategoryCtrl',
+  ['$scope', '$location', '$routeParams', 'socket', 'manager', 'oninit',
+  function( $scope, $location, $routeParams, socket, manager, oninit ) {
     console.log($scope.currentUser);
     $scope.rmedCateogry = {
       "name": ""
     };
 
-    var wait = setInterval(function () {
-      if($scope.init){
-        clearInterval(wait);
-        console.log("fill data");
+    oninit($scope, function () {
+        // console.log("fill data");
         var id = parseInt($routeParams.categoryId);
-        console.log(manager.find( $scope.categories, function( c ){ return (id === c.id); }));
+        // console.log(manager.find( $scope.categories, function( c ){ return (id === c.id); }));
         var cat = manager.find( $scope.categories, function( c ){ return (id === c.id); });
         if(cat.length > 0){
-          console.log(cat[0]);
+          // console.log(cat[0]);
           $scope.rmedCateogry = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
           $scope.$apply();
         }
-      }
-    }, 100);
+      });
 
     //edit category
     $scope.rmCategory = function ( cat ) {
@@ -91,35 +90,35 @@ categoriesControllers.controller('rmCategoryCtrl', ['$scope', '$location', '$rou
         $location.path('/user/'+$scope.currentUser);
       }
       else {
-        //TODO err - nazwa zajęty
+        // err - kategoria już usunięta
+        $location.path('/user/'+$scope.currentUser);
       }
     };
 
   }]);
 
-categoriesControllers.controller('userCtrl', ['$scope', '$routeParams', '$location', 'socket', 'manager',
-  function( $scope, $routeParams, $location, socket, manager ) {
+categoriesControllers.controller('userCtrl',
+  ['$scope', '$routeParams', '$location', 'socket', 'manager', 'oninit',
+  function( $scope, $routeParams, $location, socket, manager, oninit ) {
     $scope.query = "";
     $scope.orderProp = "-id";
-    var wait = setInterval(function () {
-      if($scope.init){
-        clearInterval(wait);
-        console.log("fill data");
+
+    oninit($scope, function () {
+        // console.log("fill data");
         var id;
         if( isNaN(parseInt($routeParams.userId)) ){
-          console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
+          // console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
           id = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); });
         }
         else{
-          console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); }));
+          // console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); }));
           id = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); });
         }
         if(id.length > 0){
-          console.log(id[0].id);
+          // console.log(id[0].id);
           $scope.user = { 'id': id[0].id, 'login': id[0].login };
-          console.log($scope.user);
+          // console.log($scope.user);
           $scope.$apply();
         }
-      }
-    }, 100);
+      });
   }]);

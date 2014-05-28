@@ -44,7 +44,7 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th colspan=3 ng-show="!!currentUser && AuthUser.id === user.id">Actions</th>
+          <th colspan=3><span ng-show="!!currentUser">Actions</span></th>
         </tr>
       </thead>
 
@@ -52,18 +52,21 @@
         <td>
           <a class="btn btn-link" href="#/user/{{cat.owner}}/category/{{cat.id}}">{{cat.name}}</a>
         </td>
-        <td ng-show="!!currentUser && AuthUser.id === cat.owner.id">
-          <a class="btn btn-default" href="#/editcategory/{{cat.id}}">
+        <td>
+          <a class="btn btn-default" href="#/editcategory/{{cat.id}}"
+            ng-show="!!currentUser && AuthUser.id === cat.owner">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
         </td>
-        <td ng-show="!!currentUser && AuthUser.id === cat.owner.id">
-          <a class="btn btn-default" href="#/rmcategory/{{cat.id}}">
+        <td>
+          <a class="btn btn-default" href="#/rmcategory/{{cat.id}}"
+            ng-show="!!currentUser && AuthUser.id === cat.owner">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
         </td>
-        <td ng-show="!!currentUser && AuthUser.id === cat.owner.id">
-          <a class="btn btn-default" href="#/addbookmark/{{cat.id}}">
+        <td>
+          <a class="btn btn-default" href="#/addbookmark/{{cat.id}}"
+            ng-show="!!currentUser && AuthUser.id === cat.owner">
             <span class="glyphicon glyphicon-plus"></span>
           </a>
         </td>

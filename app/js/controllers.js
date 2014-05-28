@@ -7,6 +7,11 @@ var appControllers = angular.module('appControllers', ['ngCookies']);
 appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService', 'socket', 'manager',
   function($scope, $cookieStore, AuthService, socket, manager) {
     $scope.init = false;
+
+    $scope.credentials = {
+      "login": '',
+      "password": ''
+    };
     //data via socket.io
     $scope.users = [];
     $scope.categories = [];
@@ -62,13 +67,10 @@ appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService
         console.log('init');
       });
     }
-    $scope.credentials = {
-      "login": '',
-      "password": ''
-    };
+
     //sign in
     $scope.signin = function ( credentials ) {
-      console.log(credentials);
+      // console.log(credentials);
       // console.log(AuthService);
       $scope.AuthUser = (AuthService.signin())
         .get({'login': credentials.login, 'password': credentials.password},
@@ -82,12 +84,12 @@ appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService
     }
     //sign out
     $scope.signout = function () {
-      console.log( $scope.AuthUser );
+      // console.log( $scope.AuthUser );
       // console.log(AuthService);
       $scope.AuthUser = (AuthService.signout())
         .get({'login': $scope.AuthUser.login, 'token': $scope.AuthUser.token},
           function ( user ) {
-            console.log( user );
+            // console.log( user );
             if( !user.auth ){
               $cookieStore.remove('AuthUser');
               $scope.currentUser = null;
@@ -101,7 +103,7 @@ appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager',
   function( $scope, socket, manager ) {
     $scope.query = "";
     $scope.orderProp = "-id";
-    console.log($scope.currentUser);
+
     $scope.account = {
       "login": "",
       "password": ""
