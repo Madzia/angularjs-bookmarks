@@ -4,7 +4,7 @@
 
 describe('App', function() {
 
-  it('should redirect index.html to index.html#/phones', function() {
+  it('should redirect index.html to index.html#/index', function() {
     browser.get('/');
     browser.getLocationAbsUrl().then(function(url) {
         expect(url.split('#')[1]).toBe('/index');
@@ -22,14 +22,14 @@ describe('App', function() {
       var login = element(by.model('credentials.login'));
       var password = element(by.model('credentials.password'));
 
-      login.sendKeys('mateusz');
+      login.sendKeys('Mateusz');
       password.sendKeys('superhaslo');
 
       element(by.css('button#signin-btn')).click();
 
       expect(element(by.css('form#signinForm')).getAttribute('class')).toContain('ng-hide');
       expect(element(by.css('ul#loggedin-box')).getAttribute('class')).not.toContain('ng-hide');
-      expect(element(by.css('a#welcome-msg')).getText()).toBe('Welcome, mateusz.');
+      expect(element(by.css('a#welcome-msg')).getText()).toBe('Welcome, Mateusz.');
     });
 
   });
