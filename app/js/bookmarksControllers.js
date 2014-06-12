@@ -31,7 +31,7 @@ bookmarksControllers.controller('categoryCtrl',
           $scope.category = { 'id': cat[0].id, 'name': cat[0].name };
           // console.log($scope.category);
         }
-          $scope.$apply();
+          // $scope.$apply();
       });
   }]);
 
@@ -53,7 +53,7 @@ bookmarksControllers.controller('addBookmarkCtrl',
           $scope.category = { 'id': cat[0].id, 'name': cat[0].name };
           // console.log($scope.category);
         }
-          $scope.$apply();
+          // $scope.$apply();
       });
 
     $scope.addBookmark = function ( bookmark ) {
@@ -96,7 +96,7 @@ bookmarksControllers.controller('editBookmarkCtrl',
             'category': book[0].category };
           // console.log($scope.editedBookmark);
         }
-          $scope.$apply();
+          // $scope.$apply();
       });
 
     $scope.editBookmark = function ( bookmark ) {
@@ -141,7 +141,7 @@ bookmarksControllers.controller('rmBookmarkCtrl',
             'category': book[0].category };
           // console.log($scope.rmedBookmark);
         }
-          $scope.$apply();
+          // $scope.$apply();
       });
 
     $scope.rmBookmark = function ( bookmark ) {

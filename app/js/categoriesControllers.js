@@ -42,7 +42,7 @@ categoriesControllers.controller('editCategoryCtrl',
         if(cat.length > 0){
           // console.log(cat[0]);
           $scope.editedCategory = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
-          $scope.$apply();
+          // $scope.$apply();
         }
       });
 
@@ -88,7 +88,7 @@ categoriesControllers.controller('rmCategoryCtrl',
         if(cat.length > 0){
           // console.log(cat[0]);
           $scope.rmedCateogry = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
-          $scope.$apply();
+          // $scope.$apply();
         }
       });
 
@@ -130,7 +130,7 @@ categoriesControllers.controller('userCtrl',
           // console.log(id[0].id);
           $scope.user = { 'id': id[0].id, 'login': id[0].login };
           // console.log($scope.user);
-          $scope.$apply();
+          // $scope.$apply();
         }
       });
   }]);

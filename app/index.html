@@ -36,6 +36,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="#/index">Home</a></li>
+        <li ng-show="!currentUser"><a href="#/signup">Create Account</a></li>
         <li ng-show="!!currentUser"><a href="#/user/{{currentUser}}">My Cateogries</a></li>
         <li ng-show="!!currentUser"><a href="#/addcategory">Add Cateogry</a></li>
         </li>

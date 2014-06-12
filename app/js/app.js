@@ -18,6 +18,10 @@ App.config(['$routeProvider',
         templateUrl: 'partials/index.html',
         controller: 'indexCtrl'
       }).
+      when('/signup', {
+        templateUrl: 'partials/signup.html',
+        controller: 'signupCtrl'
+      }).
       when('/addcategory', {
         templateUrl: 'partials/addcategory.html',
         controller: 'addCategoryCtrl'
