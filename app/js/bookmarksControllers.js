@@ -18,15 +18,20 @@ bookmarksControllers.controller('categoryCtrl',
         }
         var cat = DataService.findCategories( { 'id': parseInt( $routeParams.categoryId ) } );
         if(user.length > 0){
-          $scope.user = { 'id': user[0].id, 'login': user[0].login };
+          $scope.user = {
+            'id': user[0].id,
+            'login': user[0].login
+          };
         }
         if(cat.length > 0){
-          $scope.category = { 'id': cat[0].id, 'name': cat[0].name };
+          $scope.category = {
+            'id': cat[0].id,
+            'name': cat[0].name
+          };
         }
       });
-  }]);
-
-bookmarksControllers.controller('addBookmarkCtrl',
+}]).
+controller('addBookmarkCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
   function( $scope, $routeParams, $location, DataService, oninit ) {
     $scope.addBookmarkFailed = false;
@@ -38,7 +43,10 @@ bookmarksControllers.controller('addBookmarkCtrl',
     oninit($scope, function () {
         var cat = DataService.findCategories( { 'id': parseInt( $routeParams.categoryId ) } );
         if(cat.length > 0){
-          $scope.category = { 'id': cat[0].id, 'name': cat[0].name };
+          $scope.category = {
+            'id': cat[0].id,
+            'name': cat[0].name
+          };
         }
       });
 
@@ -56,9 +64,8 @@ bookmarksControllers.controller('addBookmarkCtrl',
     }
 
 
-  }]);
-
-bookmarksControllers.controller('editBookmarkCtrl',
+}]).
+controller('editBookmarkCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
   function( $scope, $routeParams, $location, DataService, oninit ) {
     $scope.editBookmarkFailed = false;
@@ -70,8 +77,13 @@ bookmarksControllers.controller('editBookmarkCtrl',
     oninit($scope, function () {
         var book = DataService.findBookmarks( { 'id': parseInt( $routeParams.bookmarkId ) } );
         if(book.length > 0){
-          $scope.editedBookmark = { 'id': book[0].id, 'name': book[0].name, 'url': book[0].url, 'owner': book[0].owner,
-            'category': book[0].category };
+          $scope.editedBookmark = {
+            'id': book[0].id,
+            'owner': book[0].owner,
+            'category': book[0].category,
+            'name': book[0].name,
+            'url': book[0].url
+          };
         }
       });
 
@@ -91,9 +103,8 @@ bookmarksControllers.controller('editBookmarkCtrl',
         $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
       }
     }
-  }]);
-
-bookmarksControllers.controller('rmBookmarkCtrl',
+}]).
+controller('rmBookmarkCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
   function( $scope, $routeParams, $location, DataService, oninit ) {
     $scope.rmedBookmark = {
@@ -104,8 +115,13 @@ bookmarksControllers.controller('rmBookmarkCtrl',
     oninit($scope, function () {
         var book = DataService.findBookmarks( { 'id': parseInt( $routeParams.bookmarkId ) } );
         if(book.length > 0){
-          $scope.rmedBookmark = { 'id': book[0].id, 'name': book[0].name, 'url': book[0].url, 'owner': book[0].owner,
-            'category': book[0].category };
+          $scope.rmedBookmark = {
+            'id': book[0].id,
+            'owner': book[0].owner,
+            'category': book[0].category,
+            'name': book[0].name,
+            'url': book[0].url
+          };
         }
       });
 
@@ -119,4 +135,4 @@ bookmarksControllers.controller('rmBookmarkCtrl',
         $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
       }
     }
-  }]);
+}]);

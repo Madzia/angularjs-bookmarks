@@ -4,7 +4,8 @@
 
 var appControllers = angular.module('appControllers', ['ngCookies']);
 
-appControllers.controller('MainAppCtrl', ['$scope', 'AuthService', 'DataService',
+appControllers.controller('MainAppCtrl',
+  ['$scope', 'AuthService', 'DataService',
   function($scope, AuthService, DataService) {
     $scope.loginFailed = false;
 
@@ -28,9 +29,9 @@ appControllers.controller('MainAppCtrl', ['$scope', 'AuthService', 'DataService'
       } );
     }
 
-  }]);
-
-appControllers.controller('indexCtrl', ['$scope', 'DataService', 'oninit',
+}]).
+controller('indexCtrl',
+  ['$scope', 'DataService', 'oninit',
   function( $scope, DataService, oninit ) {
     $scope.query = "";
     $scope.orderProp = "-id";
@@ -57,9 +58,9 @@ appControllers.controller('indexCtrl', ['$scope', 'DataService', 'oninit',
       }
     }
 
-  }]);
-
-appControllers.controller('signupCtrl', ['$scope', '$location', 'DataService', 'oninit',
+}]).
+controller('signupCtrl',
+  ['$scope', '$location', 'DataService', 'oninit',
   function( $scope, $location, DataService, oninit ) {
     //sign up
     $scope.signup = function ( account ) {
@@ -74,4 +75,4 @@ appControllers.controller('signupCtrl', ['$scope', '$location', 'DataService', '
       }
     };
 
-  }]);
+}]);

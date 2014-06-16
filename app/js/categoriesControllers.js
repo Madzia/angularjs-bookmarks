@@ -2,7 +2,8 @@
 
 var categoriesControllers = angular.module('categoriesControllers', []);
 
-categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'DataService',
+categoriesControllers.controller('addCategoryCtrl',
+  ['$scope', '$location', 'DataService',
   function( $scope, $location, DataService ) {
     $scope.addCategoryFailed = false;
     $scope.addedCateogry = {
@@ -20,9 +21,8 @@ categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'Dat
       }
     };
 
-  }]);
-
-categoriesControllers.controller('editCategoryCtrl',
+}]).
+controller('editCategoryCtrl',
   ['$scope', '$location', '$routeParams', 'DataService', 'oninit',
   function( $scope, $location, $routeParams, DataService, oninit ) {
     console.log($scope.currentUser);
@@ -35,7 +35,11 @@ categoriesControllers.controller('editCategoryCtrl',
         var id = parseInt($routeParams.categoryId);
         var cat = DataService.findCategories( { 'id': id } );
         if(cat.length > 0){
-          $scope.editedCategory = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
+          $scope.editedCategory = {
+            'id': cat[0].id,
+            'owner': cat[0].owner,
+            'name': cat[0].name
+          };
         }
       });
 
@@ -58,9 +62,8 @@ categoriesControllers.controller('editCategoryCtrl',
       }
     };
 
-  }]);
-
-categoriesControllers.controller('rmCategoryCtrl',
+}]).
+controller('rmCategoryCtrl',
   ['$scope', '$location', '$routeParams', 'DataService', 'oninit',
   function( $scope, $location, $routeParams, DataService, oninit ) {
     console.log($scope.currentUser);
@@ -72,7 +75,11 @@ categoriesControllers.controller('rmCategoryCtrl',
         var id = parseInt($routeParams.categoryId);
         var cat = DataService.findCategories( { 'id': id } );
         if(cat.length > 0){
-          $scope.rmedCateogry = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
+          $scope.rmedCateogry = {
+            'id': cat[0].id,
+            'owner': cat[0].owner,
+            'name': cat[0].name
+          };
 
         }
       });
@@ -89,9 +96,8 @@ categoriesControllers.controller('rmCategoryCtrl',
       }
     };
 
-  }]);
-
-categoriesControllers.controller('userCtrl',
+}]).
+controller('userCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
   function( $scope, $routeParams, $location, DataService, oninit ) {
     $scope.query = "";
@@ -109,4 +115,4 @@ categoriesControllers.controller('userCtrl',
           $scope.user = { 'id': user[0].id, 'login': user[0].login };
         }
       });
-  }]);
+}]);

@@ -4,7 +4,8 @@
 
 var appServices = angular.module('appServices', ['ngResource', 'ngCookies']);
 
-appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cookieStore', 'socket',
+appServices.factory('AuthService',
+  [ '$rootScope', '$http', '$resource', '$cookieStore', 'socket',
   function( $rootScope, $http, $resource, $cookieStore, socket ) {
 
     var  methods = {
@@ -75,8 +76,10 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
     // }
 
     return methods;
-  }]).
-  factory('socket',['$rootScope', function ($rootScope) {
+}]).
+factory('socket',
+  ['$rootScope',
+  function ($rootScope) {
     var socket = io.connect();
     return {
       on: function (eventName, callback) {
@@ -98,9 +101,10 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
         })
       }
     };
-  }]).
-  factory('manager',[ '$rootScope', 'socket', function ($rootScope, socket) {
-
+}]).
+factory('manager',
+  ['$rootScope', 'socket',
+  function ($rootScope, socket) {
     var methods =  {
       'add': function ( coll, item ) {
         coll.push(item);
@@ -160,8 +164,10 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
     }
 
     return methods;
-  }]).
-  factory('DataService',[ '$rootScope', 'socket', 'manager', function ($rootScope, socket, manager) {
+}]).
+factory('DataService',
+  ['$rootScope', 'socket', 'manager',
+  function ($rootScope, socket, manager) {
     $rootScope.init = false;
 
     //data via socket.io
@@ -249,8 +255,10 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
     }
     socket.emit('init');
     return methods;
-  }]).
-  factory('oninit',[ '$rootScope', function ($rootScope) {
+}]).
+factory('oninit',
+  ['$rootScope',
+  function ($rootScope) {
     return function ( scope, callback ) {
       var wait = setInterval(function () {
         if($rootScope.init){
@@ -259,4 +267,4 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
         }
       }, 100);
     };
-  }]);
+}]);
