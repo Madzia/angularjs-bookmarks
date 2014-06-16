@@ -25,14 +25,16 @@ exports.auth = function(req, res, appUser){
 }
 
 exports.check = function(req, res, appUser){
-  console.log(req.params);
+  // console.log(req.params);
 
   var login = req.params[0];
   var token = parseInt(req.params[1]);
+  console.log("verify");
   var result = appUser.check(login, token);
+  console.log(result);
   if( result ){
     var user = {'auth': true, 'login': result.login, 'token': result.token, 'id': result.id };
-    appUser.signin(user.login, user.id, user.token);
+    // appUser.signin(user.login, user.id, user.token);
     res.writeHead(200, {
       'Content-Type': 'application/json; charset=utf8'
     });

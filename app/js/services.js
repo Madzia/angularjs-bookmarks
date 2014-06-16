@@ -4,23 +4,49 @@
 
 var appServices = angular.module('appServices', ['ngResource', 'ngCookies']);
 
-appServices.factory('AuthService', [ '$rootScope', '$resource', '$cookieStore', 'socket',
-  function( $rootScope, $resource, $cookieStore, socket ) {
+appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cookieStore', 'socket',
+  function( $rootScope, $http, $resource, $cookieStore, socket ) {
 
-    var methods = {
-      'signin': function () {
-        return $resource('api/auth/:login/:password', {}, {
-            query: {method:'GET', params:{'login': 'login', 'password': 'password'} }
+    var  methods = {
+      'signin': function ( credentials ) {
+        return $http.get('api/auth/'+credentials.login+'/'+credentials.password).
+          success(function(data, status, headers, config) {
+            $cookieStore.put('AuthUser', {'login': data.login, 'token': data.token});
+            $rootScope.AuthUser = data;
+            $rootScope.currentUser = data.login;
+            $rootScope.loginFailed = false;
+          }).
+          error(function(data, status, headers, config) {
+            $rootScope.loginFailed = true;
           });
       },
-      'verify': function () {
-        return $resource('api/verify/:login/:token', {}, {
-            query: {method:'GET', params:{'login': 'login', 'token': 'token'} }
+      'signout': function ( credentials ) {
+        return $http.get('api/out/'+credentials.login+'/'+credentials.token).
+          success(function(data, status, headers, config) {
+            if( !data.auth ){
+              $cookieStore.remove('AuthUser');
+              $rootScope.AuthUser = null;
+              $rootScope.currentUser = null;
+            }
+          }).
+          error(function(data, status, headers, config) {
           });
       },
-      'signout': function () {
-        return $resource('api/out/:login/:token', {}, {
-            query: {method:'GET', params:{'login': 'login', 'token': 'token'} }
+      'verify': function ( credentials ) {
+        return $http.get('api/verify/'+credentials.login+'/'+credentials.token).
+          success(function(data, status, headers, config) {
+            console.log('verify success');
+            console.log(data);
+            if( data.auth ){
+              $rootScope.AuthUser = data;
+              $rootScope.currentUser = data.login;
+            } else {
+              $rootScope.AuthUser = null;
+              $rootScope.currentUser = null;
+            }
+          }).
+          error(function(data, status, headers, config) {
+            console.log('verify error');
           });
       }
     }
@@ -38,17 +64,10 @@ appServices.factory('AuthService', [ '$rootScope', '$resource', '$cookieStore', 
     try {
       var tmpAuthUser = $cookieStore.get('AuthUser');
       console.log(tmpAuthUser);
-      $rootScope.AuthUser = (methods.verify())
-        .get({'login': tmpAuthUser.login, 'token': tmpAuthUser.token},
-          function ( user ) {
-            console.log( user );
-            if( user.auth ){
-              $rootScope.currentUser = user.login;
-            } else {
-              $rootScope.AuthUser = null;
-              $rootScope.currentUser = null;
-            }
-          } );
+      methods.verify( {
+        'login': tmpAuthUser.login,
+        'token': tmpAuthUser.token
+      } );
     }
     catch (err){
       $rootScope.AuthUser = null;
@@ -84,6 +103,7 @@ appServices.factory('AuthService', [ '$rootScope', '$resource', '$cookieStore', 
     };
   }]).
   factory('manager',[ '$rootScope', 'socket', function ($rootScope, socket) {
+    $rootScope.init = false;
 
     var methods =  {
       'add': function ( coll, item ) {

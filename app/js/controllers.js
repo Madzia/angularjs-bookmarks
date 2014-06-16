@@ -6,7 +6,6 @@ var appControllers = angular.module('appControllers', ['ngCookies']);
 
 appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService', 'socket', 'manager',
   function($scope, $cookieStore, AuthService, socket, manager) {
-    $scope.init = false;
     $scope.loginFailed = false;
 
     $scope.credentials = {
@@ -16,34 +15,17 @@ appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService
 
     //sign in
     $scope.signin = function ( credentials ) {
-      // console.log(credentials);
-      // console.log(AuthService);
-      $scope.AuthUser = (AuthService.signin())
-        .get({'login': credentials.login, 'password': credentials.password},
-          function ( user ) {
-            console.log( user );
-            if( user.auth ){
-              $cookieStore.put('AuthUser', {'login': user.login, 'token': user.token});
-              $scope.currentUser = user.login;
-              $scope.loginFailed = false;
-            } else {
-              $scope.loginFailed = true;
-            }
-          } );
+      AuthService.signin( {
+        'login': credentials.login,
+        'password': credentials.password
+      } );
     }
     //sign out
     $scope.signout = function () {
-      // console.log( $scope.AuthUser );
-      // console.log(AuthService);
-      $scope.AuthUser = (AuthService.signout())
-        .get({'login': $scope.AuthUser.login, 'token': $scope.AuthUser.token},
-          function ( user ) {
-            // console.log( user );
-            if( !user.auth ){
-              $cookieStore.remove('AuthUser');
-              $scope.currentUser = null;
-            }
-          } );
+      AuthService.signout( {
+        'login': $scope.AuthUser.login,
+        'token': $scope.AuthUser.token
+      } );
     }
 
   }]);
@@ -63,7 +45,6 @@ appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager', 'oninit',
     oninit($scope, function () {
       console.log('oninit');
       $scope.browseCategories = $scope.categories;
-      // $scope.$apply();
     });
 
     $scope.userName = function ( userId ) {
