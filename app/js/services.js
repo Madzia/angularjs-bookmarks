@@ -35,8 +35,6 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
       'verify': function ( credentials ) {
         return $http.get('api/verify/'+credentials.login+'/'+credentials.token).
           success(function(data, status, headers, config) {
-            console.log('verify success');
-            console.log(data);
             if( data.auth ){
               $rootScope.AuthUser = data;
               $rootScope.currentUser = data.login;
@@ -46,7 +44,6 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
             }
           }).
           error(function(data, status, headers, config) {
-            console.log('verify error');
           });
       }
     }
@@ -73,9 +70,9 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
       $rootScope.AuthUser = null;
       $rootScope.currentUser = null;
     }
-    finally{
-      socket.emit('init', $rootScope.AuthUser);
-    }
+    // finally{
+    //
+    // }
 
     return methods;
   }]).
@@ -103,7 +100,6 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
     };
   }]).
   factory('manager',[ '$rootScope', 'socket', function ($rootScope, socket) {
-    $rootScope.init = false;
 
     var methods =  {
       'add': function ( coll, item ) {
@@ -138,21 +134,26 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
       }
     }
 
+    return methods;
+  }]).
+  factory('DataService',[ '$rootScope', 'socket', 'manager', function ($rootScope, socket, manager) {
+    $rootScope.init = false;
+
     //data via socket.io
     $rootScope.users = [];
     $rootScope.categories = [];
     $rootScope.bookmarks = [];
 
     socket.on('add', function ( data ) {
-      methods.add( $rootScope[ data.coll ], data.data );
+      manager.add( $rootScope[ data.coll ], data.data );
     });
 
     socket.on('update', function ( data ) {
-      methods.update( $rootScope[ data.coll ], data.data );
+      manager.update( $rootScope[ data.coll ], data.data );
     });
 
     socket.on('remove', function ( data ) {
-      methods.remove( $rootScope[ data.coll ], data.data );
+      manager.remove( $rootScope[ data.coll ], data.data );
     });
 
     socket.on('init', function ( data ) {
@@ -163,7 +164,56 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
         console.log('init');
     });
 
-
+    var methods = {
+      'addUser': function( user ){
+        socket.emit('addUser', user);
+      },
+      'addCategory': function ( category ){
+        category.owner = $rootScope.AuthUser.id;
+        var data = {
+          'user': $rootScope.AuthUser,
+          'data': category
+        }
+        socket.emit('addCategory', data);
+      },
+      'editCategory': function ( category ){
+        var data = {
+          'user': $rootScope.AuthUser,
+          'data': category
+        }
+        socket.emit('editCategory', data);
+      },
+      'rmCategory': function ( category ){
+        var data = {
+          'user': $rootScope.AuthUser,
+          'data': category
+        }
+        socket.emit('rmCategory', data);
+      },
+      'addBookmark': function ( bookmark ){
+        bookmark.owner = $rootScope.AuthUser.id;
+        var data = {
+          'user': $rootScope.AuthUser,
+          'data': bookmark
+        }
+        socket.emit('addBookmark', data);
+      },
+      'editBookmark': function ( bookmark ){
+        var data = {
+          'user': $rootScope.AuthUser,
+          'data': bookmark
+        }
+        socket.emit('editBookmark', data);
+      },
+      'rmBookmark': function ( bookmark ){
+        var data = {
+          'user': $rootScope.AuthUser,
+          'data': bookmark
+        }
+        socket.emit('rmBookmark', data);
+      }
+    }
+    socket.emit('init');
     return methods;
   }]).
   factory('oninit',[ '$rootScope', function ($rootScope) {

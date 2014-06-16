@@ -4,8 +4,8 @@
 
 var appControllers = angular.module('appControllers', ['ngCookies']);
 
-appControllers.controller('MainAppCtrl', ['$scope', '$cookieStore', 'AuthService', 'socket', 'manager',
-  function($scope, $cookieStore, AuthService, socket, manager) {
+appControllers.controller('MainAppCtrl', ['$scope', 'AuthService', 'DataService',
+  function($scope, AuthService, DataService) {
     $scope.loginFailed = false;
 
     $scope.credentials = {
@@ -61,15 +61,15 @@ appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager', 'oninit',
 
   }]);
 
-appControllers.controller('signupCtrl', ['$scope', '$location', 'socket', 'manager', 'oninit',
-  function( $scope, $location, socket, manager, oninit ) {
+appControllers.controller('signupCtrl', ['$scope', '$location', 'socket', 'manager', 'DataService', 'oninit',
+  function( $scope, $location, socket, manager, DataService, oninit ) {
     //sign up
     $scope.signup = function ( account ) {
       if( manager.find( $scope.users,
         function ( item ) { return item.login === account.login} ).length === 0 )
       {
         $scope.signupFailed = false;
-        socket.emit('addUser', account);
+        DataService.addUser( account );
         $location.path('/index');
       }
       else {
