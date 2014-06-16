@@ -30,8 +30,8 @@ appControllers.controller('MainAppCtrl', ['$scope', 'AuthService', 'DataService'
 
   }]);
 
-appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager', 'oninit',
-  function( $scope, socket, manager, oninit ) {
+appControllers.controller('indexCtrl', ['$scope', 'DataService', 'oninit',
+  function( $scope, DataService, oninit ) {
     $scope.query = "";
     $scope.orderProp = "-id";
     $scope.signupFailed = false;
@@ -48,9 +48,7 @@ appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager', 'oninit',
     });
 
     $scope.userName = function ( userId ) {
-      // console.log(userId);
-      var usr = manager.find( $scope.users, function ( u ) { return u.id === userId; });
-      // console.log(usr);
+      var usr = DataService.findUsers( { 'id': userId } );
       if(usr.length > 0){
         return usr[0].login;
       }
@@ -61,13 +59,12 @@ appControllers.controller('indexCtrl', ['$scope', 'socket', 'manager', 'oninit',
 
   }]);
 
-appControllers.controller('signupCtrl', ['$scope', '$location', 'socket', 'manager', 'DataService', 'oninit',
-  function( $scope, $location, socket, manager, DataService, oninit ) {
+appControllers.controller('signupCtrl', ['$scope', '$location', 'DataService', 'oninit',
+  function( $scope, $location, DataService, oninit ) {
     //sign up
     $scope.signup = function ( account ) {
-      if( manager.find( $scope.users,
-        function ( item ) { return item.login === account.login} ).length === 0 )
-      {
+      console.log(DataService.findUsers( { 'login': account.login } ));
+      if( DataService.findUsers( { 'login': account.login } ).length === 0 ) {
         $scope.signupFailed = false;
         DataService.addUser( account );
         $location.path('/index');

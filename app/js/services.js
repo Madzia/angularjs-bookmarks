@@ -211,6 +211,17 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
           'data': bookmark
         }
         socket.emit('rmBookmark', data);
+      },
+      'findUsers': function ( query ) {
+        return manager.find( $rootScope.users, function ( user ) {
+          var cond = true;
+          for( var prop in query ) {
+            if( query.hasOwnProperty(prop) && user[ prop ] !== query[ prop ] ) {
+              cond = false;
+            }
+          }
+          return cond;
+        } );
       }
     }
     socket.emit('init');

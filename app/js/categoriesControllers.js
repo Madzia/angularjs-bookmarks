@@ -105,26 +105,21 @@ categoriesControllers.controller('rmCategoryCtrl',
   }]);
 
 categoriesControllers.controller('userCtrl',
-  ['$scope', '$routeParams', '$location', 'manager', 'oninit',
-  function( $scope, $routeParams, $location, manager, oninit ) {
+  ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
+  function( $scope, $routeParams, $location, DataService, oninit ) {
     $scope.query = "";
     $scope.orderProp = "-id";
 
     oninit($scope, function () {
-        var id;
+        var user;
         if( isNaN(parseInt($routeParams.userId)) ){
-          // console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
-          id = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); });
+          user = DataService.findUsers( { 'login': $routeParams.userId } );
         }
         else{
-          // console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); }));
-          id = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); });
+          user = DataService.findUsers( { 'id': parseInt( $routeParams.userId ) } );
         }
-        if(id.length > 0){
-          // console.log(id[0].id);
-          $scope.user = { 'id': id[0].id, 'login': id[0].login };
-          // console.log($scope.user);
-
+        if(user.length > 0){
+          $scope.user = { 'id': user[0].id, 'login': user[0].login };
         }
       });
   }]);

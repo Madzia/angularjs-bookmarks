@@ -3,27 +3,22 @@
 var bookmarksControllers = angular.module('bookmarksControllers', []);
 
 bookmarksControllers.controller('categoryCtrl',
-  ['$scope', '$routeParams', '$location', 'socket', 'manager', 'oninit',
-  function( $scope, $routeParams, $location, socket, manager, oninit ) {
+  ['$scope', '$routeParams', '$location', 'DataService', 'socket', 'manager', 'oninit',
+  function( $scope, $routeParams, $location, DataService, socket, manager, oninit ) {
     $scope.query = "";
     $scope.orderProp = "-id";
 
     oninit($scope, function ()  {
-        var usr;
+        var user;
         if( isNaN(parseInt($routeParams.userId)) ){
-          // console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); }));
-          usr = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.login); });
+          user = DataService.findUsers( { 'login': $routeParams.userId } );
         }
         else{
-          // console.log(manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); }));
-          usr = manager.find( $scope.users, function( u ){ return ($routeParams.userId === u.id.toString()); });
+          user = DataService.findUsers( { 'id': parseInt( $routeParams.userId ) } );
         }
-        // console.log(manager.find( $scope.categories, function( c ){ return ($routeParams.categoryId === c.id.toString()); }));
         var cat = manager.find( $scope.categories, function( c ){ return ($routeParams.categoryId === c.id.toString()); });
-        if(usr.length > 0){
-          // console.log(usr[0].id);
-          $scope.user = { 'id': usr[0].id, 'login': usr[0].login };
-          // console.log($scope.user);
+        if(user.length > 0){
+          $scope.user = { 'id': user[0].id, 'login': user[0].login };
         }
         if(cat.length > 0){
           // console.log(cat[0].id);
