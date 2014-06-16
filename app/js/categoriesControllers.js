@@ -2,17 +2,15 @@
 
 var categoriesControllers = angular.module('categoriesControllers', []);
 
-categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'DataService', 'manager',
-  function( $scope, $location, DataService, manager ) {
+categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'DataService',
+  function( $scope, $location, DataService ) {
     $scope.addCategoryFailed = false;
     $scope.addedCateogry = {
       "name": ""
     };
     //add category
     $scope.addCategory = function ( category ) {
-      if( manager.find( $scope.categories,
-        function ( item ) { return item.name === category.name} ).length === 0 )
-      {
+      if( DataService.findCategories( { 'name': category.name } ).length === 0 ) {
         DataService.addCategory( category );
         $scope.addCategoryFailed = false;
         $location.path( '/user/' + $scope.currentUser );
@@ -25,8 +23,8 @@ categoriesControllers.controller('addCategoryCtrl', ['$scope', '$location', 'Dat
   }]);
 
 categoriesControllers.controller('editCategoryCtrl',
-  ['$scope', '$location', '$routeParams', 'DataService', 'manager', 'oninit',
-  function( $scope, $location, $routeParams, DataService, manager, oninit ) {
+  ['$scope', '$location', '$routeParams', 'DataService', 'oninit',
+  function( $scope, $location, $routeParams, DataService, oninit ) {
     console.log($scope.currentUser);
     $scope.editCategoryFailed = false;
     $scope.editedCateogry = {
@@ -35,23 +33,16 @@ categoriesControllers.controller('editCategoryCtrl',
 
     oninit($scope, function () {
         var id = parseInt($routeParams.categoryId);
-        // console.log(manager.find( $scope.categories, function( c ){ return (id === c.id); }));
-        var cat = manager.find( $scope.categories, function( c ){ return (id === c.id); });
+        var cat = DataService.findCategories( { 'id': id } );
         if(cat.length > 0){
-          // console.log(cat[0]);
           $scope.editedCategory = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
-
         }
       });
 
     //edit category
     $scope.editCategory = function ( category ) {
-      if( manager.find( $scope.categories,
-        function ( item ) { return item.id === category.id; } ).length === 1 )
-      {
-        if( manager.find( $scope.categories,
-          function ( item ) { return item.name === category.name && item.id !== category.id; } ).length === 0 )
-        {
+      if( DataService.findCategories( { 'id': category.id } ).length === 1 ){
+        if( DataService.findCategories( { 'name': category.name, 'id': { '$ne': category.id } } ).length === 0 ) {
           DataService.editCategory( category );
           $scope.editCategoryFailed = false;
           $location.path( '/user/' + $scope.currentUser );
@@ -70,8 +61,8 @@ categoriesControllers.controller('editCategoryCtrl',
   }]);
 
 categoriesControllers.controller('rmCategoryCtrl',
-  ['$scope', '$location', '$routeParams', 'DataService', 'manager', 'oninit',
-  function( $scope, $location, $routeParams, DataService, manager, oninit ) {
+  ['$scope', '$location', '$routeParams', 'DataService', 'oninit',
+  function( $scope, $location, $routeParams, DataService, oninit ) {
     console.log($scope.currentUser);
     $scope.rmedCateogry = {
       "name": ""
@@ -79,10 +70,8 @@ categoriesControllers.controller('rmCategoryCtrl',
 
     oninit($scope, function () {
         var id = parseInt($routeParams.categoryId);
-        // console.log(manager.find( $scope.categories, function( c ){ return (id === c.id); }));
-        var cat = manager.find( $scope.categories, function( c ){ return (id === c.id); });
+        var cat = DataService.findCategories( { 'id': id } );
         if(cat.length > 0){
-          // console.log(cat[0]);
           $scope.rmedCateogry = {'name': cat[0].name, 'id': cat[0].id, 'owner': cat[0].owner};
 
         }
@@ -90,9 +79,7 @@ categoriesControllers.controller('rmCategoryCtrl',
 
     //edit category
     $scope.rmCategory = function ( category ) {
-      if( manager.find( $scope.categories,
-        function ( item ) { return item.name === category.name; } ).length === 1 )
-      {
+      if( DataService.findCategories( { 'id': category.id } ).length === 1 ){
         DataService.rmCategory( category );
         $location.path( '/user/' + $scope.currentUser );
       }

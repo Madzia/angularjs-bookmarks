@@ -131,6 +131,31 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
           }
         }
         return res;
+      },
+      'findNew': function ( coll, query ) {
+        var cond = function ( item ) {
+          var cond = true;
+          for( var prop in query ) {
+            if( query.hasOwnProperty(prop) ) {
+              if ( query[ prop ].$ne ){
+                if( item[ prop ] === query[ prop ].$ne ) {
+                  cond = false;
+                }
+              }
+              else if ( item[ prop ] !== query[ prop ] ) {
+                cond = false;
+              }
+            }
+          }
+          return cond;
+        }
+        var res = [];
+        for(var i = 0; i < coll.length; i++){
+          if( cond( coll[i] ) ) {
+            res.push(coll[i]);
+          }
+        }
+        return res;
       }
     }
 
@@ -213,15 +238,13 @@ appServices.factory('AuthService', [ '$rootScope', '$http', '$resource', '$cooki
         socket.emit('rmBookmark', data);
       },
       'findUsers': function ( query ) {
-        return manager.find( $rootScope.users, function ( user ) {
-          var cond = true;
-          for( var prop in query ) {
-            if( query.hasOwnProperty(prop) && user[ prop ] !== query[ prop ] ) {
-              cond = false;
-            }
-          }
-          return cond;
-        } );
+        return manager.findNew( $rootScope.users, query );
+      },
+      'findCategories': function ( query ) {
+        return manager.findNew( $rootScope.categories, query );
+      },
+      'findBookmarks': function ( query ) {
+        return manager.findNew( $rootScope.bookmarks, query );
       }
     }
     socket.emit('init');
