@@ -8,7 +8,8 @@ var App = angular.module('App', [
   'categoriesControllers',
   'bookmarksControllers',
   'appFilters',
-  'appServices'
+  'appServices',
+  'appDataServices'
 ]);
 
 App.config(['$routeProvider',
