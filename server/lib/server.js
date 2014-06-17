@@ -52,11 +52,11 @@ exports.listen = function( server, Manager ) {
     client.on('addUser', function ( user ) {
       Manager.addUser(user, function ( err, data ) {
         if(!err){
-          var token = new Date().getTime();
-          User.signin(data.login, data.id, token);
+          // var token = new Date().getTime();
+          // User.signin(data.login, data.id, token);
           client.emit('add', {'coll': 'users', 'data': {'login': data.login, 'id': data.id} });
           client.broadcast.emit('add', {'coll': 'users', 'data': {'login': data.login, 'id': data.id} });
-          client.emit('auth', {'login': data.login, 'id': data.id, 'token': token });
+          client.emit('auth', {'login': data.login, 'id': data.id });
         }
       });
     });

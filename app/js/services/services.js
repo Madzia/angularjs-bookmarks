@@ -2,17 +2,16 @@
 
 /* Services */
 
-var appServices = angular.module('appServices', ['ngResource', 'ngCookies']);
+var appServices = angular.module('appServices', ['ngResource']);
 
 appServices.factory('AuthService',
-  [ '$rootScope', '$http', '$resource', '$cookieStore', 'socket',
-  function( $rootScope, $http, $resource, $cookieStore, socket ) {
+  [ '$rootScope', '$http', '$resource', 'socket',
+  function( $rootScope, $http, $resource, socket ) {
 
     var  methods = {
       'signin': function ( credentials ) {
         return $http.post('api/login/', { 'login': credentials.login, 'password': credentials.password } ).
           success(function(data, status, headers, config) {
-            // $cookieStore.put('AuthUser', {'login': data.login, 'token': data.token});
             $rootScope.AuthUser = data;
             $rootScope.currentUser = data.login;
             $rootScope.loginFailed = false;
@@ -25,7 +24,6 @@ appServices.factory('AuthService',
         return $http.get('api/logout').
           success(function(data, status, headers, config) {
             if( !data.auth ){
-              $cookieStore.remove('AuthUser');
               $rootScope.AuthUser = null;
               $rootScope.currentUser = null;
             }
@@ -33,7 +31,7 @@ appServices.factory('AuthService',
           error(function(data, status, headers, config) {
           });
       },
-      'verify': function ( credentials ) {
+      'verify': function ( ) {
         return $http.get('api/verify').
           success(function(data, status, headers, config) {
             if( data.auth ){
@@ -51,29 +49,13 @@ appServices.factory('AuthService',
 
     //auth via socket.io
     socket.on('auth', function ( data ) {
-      $cookieStore.put('AuthUser', {'login': data.login, 'token': data.token});
-      console.log($cookieStore.get('AuthUser'));
       $rootScope.AuthUser = data;
       $rootScope.currentUser = data.login;
       $rootScope.loginFailed = false;
     });
 
     //auth setup
-    try {
-      var tmpAuthUser = $cookieStore.get('AuthUser');
-      console.log(tmpAuthUser);
-      methods.verify( {
-        'login': tmpAuthUser.login,
-        'token': tmpAuthUser.token
-      } );
-    }
-    catch (err){
-      $rootScope.AuthUser = null;
-      $rootScope.currentUser = null;
-    }
-    // finally{
-    //
-    // }
+    methods.verify();
 
     return methods;
 }]).

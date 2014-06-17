@@ -1,5 +1,5 @@
 exports.signin = function(req, res){
-  res.cookie('AuthUser', JSON.stringify(req.user));
+  // res.cookie('AuthUser', JSON.stringify(req.user));
   res.send(req.user);
 }
 
