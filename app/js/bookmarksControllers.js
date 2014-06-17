@@ -30,6 +30,7 @@ bookmarksControllers.controller('categoryCtrl',
           };
         }
       });
+
 }]).
 controller('addBookmarkCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
@@ -51,18 +52,18 @@ controller('addBookmarkCtrl',
       });
 
     $scope.addBookmark = function ( bookmark ) {
-    if( DataService.findBookmarks( { 'name': bookmark.name } ).length === 0 ){
-        bookmark.category = $scope.category.id;
-        DataService.addBookmark( bookmark );
-        $scope.addBookmarkFailed = false;
-        $location.path( '/user/' + $scope.currentUser + '/category/' + $scope.category.id );
-      }
-      else {
-        // err - nazwa zajęty
-        $scope.addBookmarkFailed = true;
-      }
+      bookmark.category = $scope.category.id;
+      DataService.addBookmark( bookmark ).
+        success( function () {
+          $scope.addBookmarkFailed = false;
+          $location.path( '/user/' + $scope.currentUser + '/category/' + $scope.category.id );
+        }).
+        error( function ( err, errType ) {
+          if( errType.alreadyExists ) {
+            $scope.addBookmarkFailed = true;
+          }
+        });
     }
-
 
 }]).
 controller('editBookmarkCtrl',
@@ -88,21 +89,21 @@ controller('editBookmarkCtrl',
       });
 
     $scope.editBookmark = function ( bookmark ) {
-      if( DataService.findBookmarks( { 'id': bookmark.id } ).length === 1 ){
-        if( DataService.findBookmarks( { 'name': bookmark.name, 'id': { '$ne': bookmark.id } } ).length ===0 ){
-          DataService.editBookmark( bookmark );
+      DataService.editBookmark( bookmark ).
+        success( function () {
           $scope.editBookmarkFailed = false;
           $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
-        }
-        else {
-          //err - nazwa zajęta
-          $scope.editBookmarkFailed = true;
-        }
-      }
-      else {
-        $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
-      }
+        }).
+        error( function ( err, errType ) {
+          if( errType.alreadyExists ) {
+            $scope.editBookmarkFailed = true;
+          }
+          else if( errType.notExists ) {
+            $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
+          }
+        });
     }
+
 }]).
 controller('rmBookmarkCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
@@ -126,13 +127,15 @@ controller('rmBookmarkCtrl',
       });
 
     $scope.rmBookmark = function ( bookmark ) {
-      if( DataService.findBookmarks( { 'id': bookmark.id } ).length == 1 ){
-
-        DataService.rmBookmark( bookmark );
-        $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
-      }
-      else {
-        $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
-      }
+        DataService.rmBookmark( bookmark ).
+        success( function () {
+          $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
+        }).
+        error( function ( err, errType ) {
+          if( errType.notExists ) {
+            $location.path( '/user/' + $scope.currentUser + '/category/' + bookmark.category );
+          }
+        });
     }
+
 }]);

@@ -11,14 +11,16 @@ categoriesControllers.controller('addCategoryCtrl',
     };
     //add category
     $scope.addCategory = function ( category ) {
-      if( DataService.findCategories( { 'name': category.name } ).length === 0 ) {
-        DataService.addCategory( category );
-        $scope.addCategoryFailed = false;
-        $location.path( '/user/' + $scope.currentUser );
-      }
-      else {
-        $scope.addCategoryFailed = true;
-      }
+      DataService.addCategory( category ).
+        success( function () {
+          $scope.addCategoryFailed = false;
+          $location.path( '/user/' + $scope.currentUser );
+        }).
+        error( function ( err, errType ) {
+          if( errType.alreadyExists ) {
+            $scope.addCategoryFailed = true;
+          }
+        });
     };
 
 }]).
@@ -45,21 +47,19 @@ controller('editCategoryCtrl',
 
     //edit category
     $scope.editCategory = function ( category ) {
-      if( DataService.findCategories( { 'id': category.id } ).length === 1 ){
-        if( DataService.findCategories( { 'name': category.name, 'id': { '$ne': category.id } } ).length === 0 ) {
-          DataService.editCategory( category );
+      DataService.editCategory( category ).
+        success( function () {
           $scope.editCategoryFailed = false;
           $location.path( '/user/' + $scope.currentUser );
-        }
-        else {
-          // err - nazwa zajęta
-          $scope.editCategoryFailed = true;
-        }
-      }
-      else {
-        // err - nie ma takiej kategorii
-        $location.path( '/user/' + $scope.currentUser );
-      }
+        }).
+        error( function ( err, errType ) {
+          if( errType.alreadyExists ) {
+            $scope.editCategoryFailed = true;
+          }
+          else if( errType.notExists ) {
+            $location.path( '/user/' + $scope.currentUser );
+          }
+      });
     };
 
 }]).
@@ -86,14 +86,15 @@ controller('rmCategoryCtrl',
 
     //edit category
     $scope.rmCategory = function ( category ) {
-      if( DataService.findCategories( { 'id': category.id } ).length === 1 ){
-        DataService.rmCategory( category );
-        $location.path( '/user/' + $scope.currentUser );
-      }
-      else {
-        // err - kategoria już usunięta
-        $location.path( '/user/' + $scope.currentUser );
-      }
+      DataService.rmCategory( category ).
+        success( function () {
+          $location.path( '/user/' + $scope.currentUser );
+        }).
+        error( function ( err, errType ) {
+          if( errType.notExists ) {
+            $location.path( '/user/' + $scope.currentUser );
+          }
+        });
     };
 
 }]).

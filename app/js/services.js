@@ -195,53 +195,143 @@ factory('DataService',
         console.log('init');
     });
 
+    var callbacks = function ( err, errType ) {
+      return {
+        'success': function ( callback ) {
+          if( !err ) {
+            callback();
+          }
+          return callbacks( err, errType );
+        },
+        'error': function ( callback ) {
+          if ( err ) {
+            callback( err, errType );
+          }
+          return callbacks( err, errType );
+        }
+      };
+    }
+
     var methods = {
       'addUser': function( user ){
-        socket.emit('addUser', user);
+        var err = false;
+        if( methods.findUsers( { 'login': user.login } ).length === 0 ) {
+          socket.emit('addUser', user);
+        }
+        else {
+          err = true;
+        }
+        return callbacks( err );
       },
       'addCategory': function ( category ){
-        category.owner = $rootScope.AuthUser.id;
-        var data = {
-          'user': $rootScope.AuthUser,
-          'data': category
+        var err = false;
+        var errType = {};
+        if( methods.findCategories( { 'name': category.name } ).length === 0 ) {
+          category.owner = $rootScope.AuthUser.id;
+          var data = {
+            'user': $rootScope.AuthUser,
+            'data': category
+          }
+          socket.emit('addCategory', data);
         }
-        socket.emit('addCategory', data);
+        else {
+          err = true;
+          errType.alreadyExists = true;
+        }
+        return callbacks( err, errType );
       },
       'editCategory': function ( category ){
-        var data = {
-          'user': $rootScope.AuthUser,
-          'data': category
+        var err = false;
+        var errType = {};
+        if( methods.findCategories( { 'id': category.id } ).length === 1 ){
+          if( methods.findCategories( { 'name': category.name, 'id': { '$ne': category.id } } ).length === 0 ) {
+            var data = {
+              'user': $rootScope.AuthUser,
+              'data': category
+            }
+            socket.emit('editCategory', data);
+          }
+          else {
+            err = true;
+            errType.alreadyExists = true;
+          }
         }
-        socket.emit('editCategory', data);
+        else {
+          err = true;
+          errType.notExists = true;
+        }
+        return callbacks( err, errType );
       },
       'rmCategory': function ( category ){
-        var data = {
-          'user': $rootScope.AuthUser,
-          'data': category
+        var err = false;
+        var errType = {};
+        if( methods.findCategories( { 'id': category.id } ).length === 1 ){
+          var data = {
+            'user': $rootScope.AuthUser,
+            'data': category
+          }
+          socket.emit('rmCategory', data);
         }
-        socket.emit('rmCategory', data);
+        else {
+          err = true;
+          errType.notExists = true;
+        }
+        return callbacks( err, errType );
       },
       'addBookmark': function ( bookmark ){
-        bookmark.owner = $rootScope.AuthUser.id;
-        var data = {
-          'user': $rootScope.AuthUser,
-          'data': bookmark
+        var err = false;
+        var errType = {};
+        if( methods.findBookmarks( { 'name': bookmark.name } ).length === 0 ){
+          bookmark.owner = $rootScope.AuthUser.id;
+          var data = {
+            'user': $rootScope.AuthUser,
+            'data': bookmark
+          }
+          socket.emit('addBookmark', data);
         }
-        socket.emit('addBookmark', data);
+        else {
+          err = true;
+          errType.alreadyExists = true;
+        }
+        return callbacks( err, errType );
       },
       'editBookmark': function ( bookmark ){
-        var data = {
-          'user': $rootScope.AuthUser,
-          'data': bookmark
+        var err = false;
+        var errType = {};
+        if( methods.findBookmarks( { 'id': bookmark.id } ).length === 1 ){
+          if( methods.findBookmarks( { 'name': bookmark.name, 'id': { '$ne': bookmark.id } } ).length ===0 ){
+            var data = {
+              'user': $rootScope.AuthUser,
+              'data': bookmark
+            }
+            socket.emit('editBookmark', data);
+          }
+          else {
+            err = true;
+            errType.alreadyExists = true;
+          }
         }
-        socket.emit('editBookmark', data);
+        else {
+          err = true;
+          errType.notExists = true;
+        }
+        return callbacks( err, errType );
       },
       'rmBookmark': function ( bookmark ){
-        var data = {
-          'user': $rootScope.AuthUser,
-          'data': bookmark
+        var err = false;
+        var errType = {};
+        if( methods.findBookmarks( { 'id': bookmark.id } ).length == 1 ){
+          var data = {
+            'user': $rootScope.AuthUser,
+            'data': bookmark
+          }
+          socket.emit('rmBookmark', data);
         }
-        socket.emit('rmBookmark', data);
+        else {
+          err = true;
+          errType.notExists = true;
+        }
+        return callbacks( err, errType );
       },
       'findUsers': function ( query ) {
         return manager.findNew( $rootScope.users, query );

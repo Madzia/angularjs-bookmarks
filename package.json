@@ -18,8 +18,7 @@
   "scripts": {
     "postinstall": "bower install",
 
-    "prestart": "npm install",
-    "start": "http-server -p 8000",
+    "start": "sudo node app.js",
 
     "pretest": "npm install",
     "test": "karma start test/karma.conf.js",

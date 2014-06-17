@@ -38,10 +38,6 @@ controller('indexCtrl',
     $scope.signupFailed = false;
     $scope.browseCategories = [];
 
-    $scope.account = {
-      "login": "",
-      "password": ""
-    };
 
     oninit($scope, function () {
       console.log('oninit');
@@ -54,7 +50,7 @@ controller('indexCtrl',
         return usr[0].login;
       }
       else{
-        return "unknown";
+        return "Unknown";
       }
     }
 
@@ -62,17 +58,20 @@ controller('indexCtrl',
 controller('signupCtrl',
   ['$scope', '$location', 'DataService', 'oninit',
   function( $scope, $location, DataService, oninit ) {
+    $scope.account = {
+      "login": "",
+      "password": ""
+    };
     //sign up
     $scope.signup = function ( account ) {
-      console.log(DataService.findUsers( { 'login': account.login } ));
-      if( DataService.findUsers( { 'login': account.login } ).length === 0 ) {
-        $scope.signupFailed = false;
-        DataService.addUser( account );
-        $location.path('/index');
-      }
-      else {
-        $scope.signupFailed = true;
-      }
+      DataService.addUser( account ).
+        success( function () {
+          $scope.signupFailed = false;
+          $location.path('/index');
+        }).
+        error( function ( err ) {
+          $scope.signupFailed = true;
+        });
     };
 
 }]);
