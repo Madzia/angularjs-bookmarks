@@ -1,11 +1,11 @@
 var express = require('express');
-var routes = require('./routes');
+var routes = require('./server/routes');
 var http = require('http');
 var path = require('path');
-var appServer = require('./lib/server.js');
-var appData = require('./lib/data.js')('angularBookmarks');
-var appManager = require('./lib/manager.js')(appData);
-var appUser = require('./lib/users.js')(appManager);
+var appServer = require('./server/lib/server.js');
+var appData = require('./server/lib/data.js')('angularBookmarks');
+var appManager = require('./server/lib/manager.js')(appData);
+var appUser = require('./server/lib/users.js')(appManager);
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
