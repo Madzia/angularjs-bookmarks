@@ -12,7 +12,6 @@ var routes = require('./server/routes');
 var appServer = require('./server/lib/server.js');
 var appData = require('./server/lib/data.js')('angularBookmarks');
 var appManager = require('./server/lib/manager.js')(appData);
-var appUser = require('./server/lib/users.js')(appManager);
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -29,9 +28,8 @@ passport.use(
       if (!user) return done(null, false);
 
       if(user.password === password) {
-        user.token = new Date().getTime();
         delete(user._id);
-        appUser.signin( user.login, user.id, user.token );
+        delete(user.password);
         return done(null, user);
       }
       else {
@@ -58,13 +56,13 @@ var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-appServer.listen(server, appUser, appManager);
+appServer.listen(server, appManager);
 
 app.post('/api/login', passport.authenticate('local'),
   function(req, res) { routes.signin(req, res); });
 
-app.get(/api\/verify\/([\w\d]+)\/([\d]+)/,
-  function (req, res) { routes.check(req, res, appUser, appManager); });
+app.get('/api/verify',
+  function (req, res) { routes.check(req, res); });
 
-app.get(/api\/logout\/([\w\d]+)\/([\d]+)/,
-  function(req, res) { routes.signout(req, res, appUser); });
+app.get('/api/logout',
+  function(req, res) { routes.signout(req, res); });

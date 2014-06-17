@@ -22,7 +22,7 @@ appServices.factory('AuthService',
           });
       },
       'signout': function ( credentials ) {
-        return $http.get('api/logout/'+credentials.login+'/'+credentials.token).
+        return $http.get('api/logout').
           success(function(data, status, headers, config) {
             if( !data.auth ){
               $cookieStore.remove('AuthUser');
@@ -34,7 +34,7 @@ appServices.factory('AuthService',
           });
       },
       'verify': function ( credentials ) {
-        return $http.get('api/verify/'+credentials.login+'/'+credentials.token).
+        return $http.get('api/verify').
           success(function(data, status, headers, config) {
             if( data.auth ){
               $rootScope.AuthUser = data;

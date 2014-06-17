@@ -24,12 +24,10 @@ module.exports = function (Data){
       Data.findAllData('category', undefined, callback);
     },
     'editCategory': function ( category, callback ) {
-      console.log(category);
       Data.updateData('category', { 'id': category.id },
       { $set: { 'name': category.name } }, callback);
     },
     'rmCategory': function ( category, callback ) {
-      console.log(category);
       Data.removeData('category', { 'id': category.id }, callback);
     },
     //bookmarks
@@ -41,12 +39,10 @@ module.exports = function (Data){
       Data.findAllData('bookmark', undefined, callback);
     },
     'editBookmark': function ( bookmark, callback ) {
-      console.log(bookmark);
       Data.updateData('bookmark', { 'id': bookmark.id },
       { $set: { 'name': bookmark.name, 'url': bookmark.url } }, callback);
     },
     'rmBookmark': function ( bookmark, callback ) {
-      console.log(bookmark);
       Data.removeData('bookmark', { 'id': bookmark.id }, callback);
     }
   }

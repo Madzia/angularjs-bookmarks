@@ -1,6 +1,6 @@
 var socketio = require('socket.io');
 
-exports.listen = function( server, User, Manager ) {
+exports.listen = function( server, Manager ) {
   var io = socketio.listen(server);
 
   Manager.findAllUsers(function ( err, data ) {
@@ -22,8 +22,7 @@ exports.listen = function( server, User, Manager ) {
     console.log(client.id);
 
     //init
-    client.on('init', function ( AuthUser ){
-      console.log( AuthUser );
+    client.on('init', function () {
       Manager.findAllUsers(function ( err, data ) {
         if(!err){
           var res = {
@@ -64,13 +63,9 @@ exports.listen = function( server, User, Manager ) {
 
     //categories
     client.on('addCategory', function ( data ) {
-      var user = User.check(data.user.login, data.user.token);
-      console.log(user);
-      if( user && user.id === data.data.owner ) {
+      if( data.user.id === data.data.owner ) {
         var category = { 'name': data.data.name, 'owner': data.data.owner };
         Manager.addCategory(category, function ( err, data ) {
-          console.log(err);
-          console.log(data);
           if(!err){
             client.emit('add', {'coll': 'categories', 'data': category });
             client.broadcast.emit('add', {'coll': 'categories', 'data': category });
@@ -80,8 +75,7 @@ exports.listen = function( server, User, Manager ) {
     });
 
     client.on('editCategory', function ( data ) {
-      var user = User.check(data.user.login, data.user.token);
-      if( user && user.id === data.data.owner ) {
+      if( data.user.id === data.data.owner ) {
         var category = data.data;
         Manager.editCategory(category, function ( err, data ) {
           if(!err){
@@ -93,8 +87,7 @@ exports.listen = function( server, User, Manager ) {
     });
 
     client.on('rmCategory', function ( data ) {
-      var user = User.check(data.user.login, data.user.token);
-      if( user && user.id === data.data.owner ) {
+      if( data.user.id === data.data.owner ) {
         var category = data.data;
         Manager.rmCategory(category, function ( err, data ) {
           if(!err){
@@ -107,8 +100,7 @@ exports.listen = function( server, User, Manager ) {
 
     //bookmarks
     client.on('addBookmark', function ( data ) {
-      var user = User.check(data.user.login, data.user.token);
-      if( user && user.id === data.data.owner ) {
+      if( data.user.id === data.data.owner ) {
         var bookmark = { 'name': data.data.name, 'owner': data.data.owner,
           'category': data.data.category, 'url': data.data.url };
         Manager.addBookmark(bookmark, function ( err, data ) {
@@ -121,8 +113,7 @@ exports.listen = function( server, User, Manager ) {
     });
 
     client.on('editBookmark', function ( data ) {
-      var user = User.check(data.user.login, data.user.token);
-      if( user && user.id === data.data.owner ) {
+      if( data.user.id === data.data.owner ) {
         var bookmark = data.data;
         Manager.editBookmark(bookmark, function ( err, data ) {
           if(!err){
@@ -134,8 +125,7 @@ exports.listen = function( server, User, Manager ) {
     });
 
     client.on('rmBookmark', function ( data ) {
-      var user = User.check(data.user.login, data.user.token);
-      if( user && user.id === data.data.owner ) {
+      if( data.user.id === data.data.owner ) {
         var bookmark = data.data;
         Manager.rmBookmark(bookmark, function ( err, data ) {
           if(!err){

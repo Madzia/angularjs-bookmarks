@@ -3,37 +3,31 @@ exports.signin = function(req, res){
   res.send(req.user);
 }
 
-exports.check = function(req, res, appUser){
-  var login = req.params[0];
-  var token = parseInt(req.params[1]);
-  console.log("verify");
-  var result = appUser.check(login, token);
-  console.log(result);
-  if( result ){
-    var user = {'auth': true, 'login': result.login, 'token': result.token, 'id': result.id };
+exports.check = function(req, res){
+  console.log('check');
+  console.log(req.user);
+  if( req.isAuthenticated() ){
+    console.log('isAuth');
     res.writeHead(200, {
       'Content-Type': 'application/json; charset=utf8'
     });
-    res.end(JSON.stringify(user));
+    res.end( JSON.stringify( { 'auth': true, 'login': req.user.login, 'id': req.user.id } ) );
   }
   else {
+    console.log('isNotAuth');
     res.writeHead(200, {
       'Content-Type': 'application/json; charset=utf8'
     });
-    res.end(JSON.stringify({'auth': false}));
+    res.end( JSON.stringify( { 'auth': false } ) );
   }
 
 };
 
-exports.signout = function(req, res, appUser){
-  var login = req.params[0];
-  var token = parseInt(req.params[1]);
-
-  appUser.signout(login, token);
+exports.signout = function(req, res){
   req.logout();
 
   res.writeHead(200, {
     'Content-Type': 'application/json; charset=utf8'
   });
-  res.end(JSON.stringify({'auth': false}));
+  res.end( JSON.stringify( { 'auth': false } ) );
 };
