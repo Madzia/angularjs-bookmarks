@@ -2,7 +2,7 @@
 
 var bookmarksControllers = angular.module('bookmarksControllers', []);
 
-bookmarksControllers.controller('categoryCtrl',
+bookmarksControllers.controller('bookmarksCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
   function( $scope, $routeParams, $location, DataService, oninit ) {
     $scope.query = "";

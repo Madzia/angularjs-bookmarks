@@ -23,38 +23,41 @@ App.config(['$routeProvider',
         templateUrl: 'partials/signup.html',
         controller: 'signupCtrl'
       }).
+      // categories
+      when('/user/:userId', {
+        templateUrl: 'partials/category/categories.html',
+        controller: 'categoriesCtrl'
+      }).
       when('/addcategory', {
-        templateUrl: 'partials/addcategory.html',
+        templateUrl: 'partials/category/addcategory.html',
         controller: 'addCategoryCtrl'
       }).
       when('/editcategory/:categoryId', {
-        templateUrl: 'partials/editcategory.html',
+        templateUrl: 'partials/category/editcategory.html',
         controller: 'editCategoryCtrl'
       }).
       when('/rmcategory/:categoryId', {
-        templateUrl: 'partials/rmcategory.html',
+        templateUrl: 'partials/category/rmcategory.html',
         controller: 'rmCategoryCtrl'
       }).
+      // bookmarks
       when('/user/:userId/category/:categoryId', {
-        templateUrl: 'partials/category.html',
-        controller: 'categoryCtrl'
-      }).
-      when('/user/:userId', {
-        templateUrl: 'partials/user.html',
-        controller: 'userCtrl'
+        templateUrl: 'partials/bookmark/bookmarks.html',
+        controller: 'bookmarksCtrl'
       }).
       when('/addbookmark/:categoryId', {
-        templateUrl: 'partials/addbookmark.html',
+        templateUrl: 'partials/bookmark/addbookmark.html',
         controller: 'addBookmarkCtrl'
       }).
       when('/editbookmark/:bookmarkId', {
-        templateUrl: 'partials/editbookmark.html',
+        templateUrl: 'partials/bookmark/editbookmark.html',
         controller: 'editBookmarkCtrl'
       }).
       when('/rmbookmark/:bookmarkId', {
-        templateUrl: 'partials/rmbookmark.html',
+        templateUrl: 'partials/bookmark/rmbookmark.html',
         controller: 'rmBookmarkCtrl'
       }).
+      // ---
       otherwise({
         redirectTo: '/index'
       });

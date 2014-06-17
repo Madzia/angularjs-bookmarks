@@ -98,7 +98,7 @@ controller('rmCategoryCtrl',
     };
 
 }]).
-controller('userCtrl',
+controller('categoriesCtrl',
   ['$scope', '$routeParams', '$location', 'DataService', 'oninit',
   function( $scope, $routeParams, $location, DataService, oninit ) {
     $scope.query = "";
