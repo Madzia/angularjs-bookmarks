@@ -10,9 +10,9 @@ appServices.factory('AuthService',
 
     var  methods = {
       'signin': function ( credentials ) {
-        return $http.get('api/auth/'+credentials.login+'/'+credentials.password).
+        return $http.post('api/login/', { 'login': credentials.login, 'password': credentials.password } ).
           success(function(data, status, headers, config) {
-            $cookieStore.put('AuthUser', {'login': data.login, 'token': data.token});
+            // $cookieStore.put('AuthUser', {'login': data.login, 'token': data.token});
             $rootScope.AuthUser = data;
             $rootScope.currentUser = data.login;
             $rootScope.loginFailed = false;
@@ -22,7 +22,7 @@ appServices.factory('AuthService',
           });
       },
       'signout': function ( credentials ) {
-        return $http.get('api/out/'+credentials.login+'/'+credentials.token).
+        return $http.get('api/logout/'+credentials.login+'/'+credentials.token).
           success(function(data, status, headers, config) {
             if( !data.auth ){
               $cookieStore.remove('AuthUser');
