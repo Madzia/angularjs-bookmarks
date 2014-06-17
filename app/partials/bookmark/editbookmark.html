@@ -23,7 +23,7 @@
       <a class="btn btn-danger" ng-show="!!currentUser" href="#/user/{{currentUser}}/category/{{editedBookmark.category}}">Cancel</a>
       <button type="submit" class="btn btn-default"
         ng-disabled="( editBookmarkForm.$invalid || (editedBookmark.name.length === 0) || (editedBookmark.url.length === 0) )"
-        ng-show="!!currentUser">Save</button>
+        ng-show="( !!currentUser && editedBookmark.owner === AuthUser.id )">Save</button>
     </form>
   </div>
   <div class="col-md-1"></div>

@@ -9,10 +9,12 @@
 
     <div class="row">
     <div class="col-md-6">
-      <a class="btn btn-primary" href="#/user/{{currentUser}}/category/{{rmedBookmark.category}}"  ng-show="!!currentUser">No, cancel.</a>
+      <a class="btn btn-primary" href="#/user/{{currentUser}}/category/{{rmedBookmark.category}}"
+        ng-show="!!currentUser">No, cancel.</a>
     </div>
     <div class="col-md-6">
-      <button class="btn btn-danger" ng-click="rmBookmark(rmedBookmark)"  ng-show="!!currentUser">Yes, remove.</button>
+      <button class="btn btn-danger" ng-click="rmBookmark(rmedBookmark)"
+        ng-show="( !!currentUser && rmedBookmark.owner === AuthUser.id )">Yes, remove.</button>
     </div>
     </div>
 

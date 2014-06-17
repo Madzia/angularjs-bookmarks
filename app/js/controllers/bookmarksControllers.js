@@ -26,6 +26,7 @@ bookmarksControllers.controller('bookmarksCtrl',
         if(cat.length > 0){
           $scope.category = {
             'id': cat[0].id,
+            'owner': cat[0].owner,
             'name': cat[0].name
           };
         }
@@ -46,6 +47,7 @@ controller('addBookmarkCtrl',
         if(cat.length > 0){
           $scope.category = {
             'id': cat[0].id,
+            'owner': cat[0].owner,
             'name': cat[0].name
           };
         }
