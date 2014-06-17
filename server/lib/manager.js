@@ -9,6 +9,12 @@ module.exports = function (Data){
     'findAllUsers': function ( callback ) {
       Data.findAllData('user', undefined, callback);
     },
+    'findUserById': function ( id, callback ) {
+      Data.findData('user', { 'id': id }, callback);
+    },
+    'findUserByLogin': function( login, callback ) {
+      Data.findData('user', { 'login': login }, callback);
+    },
     //categories
     'addCategory': function ( category, callback ) {
       category.id = new Date().getTime();
