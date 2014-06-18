@@ -128,7 +128,7 @@ factory('DataService',
       'addCategory': function ( category ){
         var err = false;
         var errType = {};
-        if( methods.findCategories( { 'name': category.name } ).length === 0 ) {
+        if( methods.findCategories( { 'name': category.name, 'owner': $rootScope.AuthUser.id } ).length === 0 ) {
           category.owner = $rootScope.AuthUser.id;
           var data = {
             'user': $rootScope.AuthUser,
@@ -146,7 +146,7 @@ factory('DataService',
         var err = false;
         var errType = {};
         if( methods.findCategories( { 'id': category.id } ).length === 1 ){
-          if( methods.findCategories( { 'name': category.name, 'id': { '$ne': category.id } } ).length === 0 ) {
+          if( methods.findCategories( { 'name': category.name, 'id': { '$ne': category.id }, 'owner': $rootScope.AuthUser.id } ).length === 0 ) {
             var data = {
               'user': $rootScope.AuthUser,
               'data': category
@@ -183,7 +183,7 @@ factory('DataService',
       'addBookmark': function ( bookmark ){
         var err = false;
         var errType = {};
-        if( methods.findBookmarks( { 'name': bookmark.name } ).length === 0 ){
+        if( methods.findBookmarks( { 'name': bookmark.name, 'category': bookmark.category } ).length === 0 ){
           bookmark.owner = $rootScope.AuthUser.id;
           var data = {
             'user': $rootScope.AuthUser,
@@ -201,7 +201,7 @@ factory('DataService',
         var err = false;
         var errType = {};
         if( methods.findBookmarks( { 'id': bookmark.id } ).length === 1 ){
-          if( methods.findBookmarks( { 'name': bookmark.name, 'id': { '$ne': bookmark.id } } ).length ===0 ){
+          if( methods.findBookmarks( { 'name': bookmark.name, 'id': { '$ne': bookmark.id }, 'category': bookmark.category } ).length ===0 ){
             var data = {
               'user': $rootScope.AuthUser,
               'data': bookmark
