@@ -7,7 +7,10 @@ var appControllers = angular.module('appControllers', ['ngCookies']);
 appControllers.controller('MainAppCtrl',
   ['$scope', 'AuthService', 'DataService',
   function($scope, AuthService, DataService) {
-    $scope.loginFailed = false;
+    //check if loggedin
+    AuthService.verify();
+
+    // $scope.loginFailed = false;
 
     $scope.credentials = {
       "login": '',
@@ -35,7 +38,6 @@ controller('indexCtrl',
   function( $scope, DataService, oninit ) {
     $scope.query = "";
     $scope.orderProp = "-id";
-    $scope.signupFailed = false;
     $scope.browseCategories = [];
 
 
@@ -58,6 +60,7 @@ controller('indexCtrl',
 controller('signupCtrl',
   ['$scope', '$location', 'DataService', 'oninit',
   function( $scope, $location, DataService, oninit ) {
+    $scope.signupFailed = false;
     $scope.account = {
       "login": "",
       "password": ""

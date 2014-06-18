@@ -55,7 +55,7 @@ appServices.factory('AuthService',
     });
 
     //auth setup
-    methods.verify();
+    // methods.verify();
 
     return methods;
 }]).
